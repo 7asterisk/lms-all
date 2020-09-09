@@ -1,0 +1,21 @@
+.uk-comment {
+  padding: 10px;
+}
+
+.uk-comment-list > :nth-child(n + 2) {
+  margin-top: 20px;
+}
+
+.uk-comment-list .uk-comment ~ ul {
+  margin: 10px 0 0 0;
+  padding-left: 30px;
+  list-style: none;
+}
+
+.uk-comment-header {
+  margin-bottom: 0px;
+}
+
+.uk-comment-list .uk-comment ~ ul > :nth-child(n + 2) {
+  margin-top: 10px;
+}

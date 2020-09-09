@@ -1,0 +1,53 @@
+<br>
+
+<div class="uk-container">
+
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Quiz</span></li>
+    <li><span>{{quizTitle}}</span></li>
+  </ul>
+
+  <ul style="margin-bottom: -20px;" uk-tab>
+    <li><a href="#">Submited student</a></li>
+    <li><a href="#">not Submited</a></li>
+  </ul>
+  <ul class="uk-switcher uk-margin">
+    <li>
+      <table class="uk-table">
+        <thead>
+          <tr style="box-shadow: none;">
+            <th>student Name</th>
+            <th>Submission time</th>
+            <th>status</th>
+            <th>marks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="quiz-row" *ngFor="let sub of allSubmission"
+            [routerLink]="[ '/tr/course/assing-quiz-marks',{courseId:courseId,subBlockId:blockId,quizId:quizId,studentId:sub.studentId._id} ]">
+            <td>{{sub.studentId.studentName  }}</td>
+            <td>{{sub.submissionDate | date:'medium'}}</td>
+            <td *ngIf="sub.marks">Checked</td>
+            <td *ngIf="!sub.marks">Not Checked</td>
+            <td>{{sub.marks}}/{{outOf}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </li>
+    <li>
+
+      <table class="uk-table">
+        <tbody>
+          <tr class="quiz-row" *ngFor="let student of notSubmited">
+            <td> {{student.studentName}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </li>
+  </ul>
+
+
+</div>

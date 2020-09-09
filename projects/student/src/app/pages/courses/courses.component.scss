@@ -1,0 +1,59 @@
+.uk-card-media-top>img {
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+
+.sidenav-link>li>a>svg {
+  width: 24px;
+}
+
+.mat-drawer-side {
+  // border-right: 1px solid rgba(0, 0, 0, .12);
+}
+
+.sidenav-link>li {
+  padding: 15px 30px;
+  font-weight: 500;
+}
+
+.active {
+  background: #bcd2e6;
+}
+
+.bottom-link {
+  font-size: small;
+  margin: 0px;
+}
+
+.colaps-btn {
+  position: fixed;
+  bottom: 50px;
+}
+
+.uk-list> ::before {
+  width: 0px;
+}
+
+.nav-list-center {
+  text-align: center;
+}
+
+
+.badge {
+  background-color: #00d1b2;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  font-size: 0.7rem;
+  color: #fff;
+  height: 14px;
+  min-width: 4px;
+  overflow: hidden;
+  padding: 0.05rem 0.3rem;
+  position: absolute;
+  text-overflow: ellipsis;
+  transform: translate(50%, -50%);
+  white-space: nowrap;
+  margin-left: -10px;
+}

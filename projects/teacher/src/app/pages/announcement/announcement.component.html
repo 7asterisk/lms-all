@@ -1,0 +1,115 @@
+<br>
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Announcemnet</span></li>
+  </ul>
+
+  <div class="uk-card uk-card-default uk-card-body">
+    <button class="uk-button" href="#add-announcemnet" uk-toggle>
+      Make Announcemnet</button>
+
+  </div>
+
+  <div uk-grid>
+    <div class="uk-width-1-1@m">
+      <table class="uk-table">
+        <tbody>
+          <tr *ngFor="let announc of allAnnouncement">
+            <td>
+              <h4>{{announc.title}}</h4>
+              <p>{{announc.text}}</p>
+            </td>
+            <td>
+              <div class="uk-inline">
+                <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
+                <div uk-dropdown="mode: click">
+                  <ul class="uk-list">
+                    <li>
+                      <a (click)="editAnnouncement(announc)" href="#add-announcemnet" uk-toggle>
+                        <span uk-icon="pencil"></span> &nbsp;&nbsp; Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a (click)="deleteAnnouncement(announc._id)">
+                        <span uk-icon="trash"></span> &nbsp;&nbsp;
+                        Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+<br>
+
+
+<div id="add-announcemnet" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" (click)="reset()" type="button" uk-close></button>
+    <form>
+      <fieldset class="uk-fieldset">
+
+        <legend class="uk-legend">Make Announcemnet</legend>
+
+
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-select">Add title</label>
+          <input class="uk-input" type="text" name="aname" [(ngModel)]="newAnnouncement.title"
+            placeholder="Announcement Title">
+        </div>
+
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-select">Add Description</label>
+          <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="newAnnouncement.text"
+            placeholder="Announcement Description"></textarea>
+        </div>
+
+
+
+        <div *ngIf="!(newAnnouncement.fileUrl.length>0)" class=" uk-placeholder uk-text-center"
+          style="width: -webkit-fill-available;" uk-form-custom>
+          <input type="file" (change)="uploadFile($event)">
+          <div class="uk-width-1-1">
+            <span uk-icon="icon: cloud-upload"></span> &nbsp;
+            <div uk-form-custom>
+              <span>select File</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="newAnnouncement.fileUrl.length>0" class="chapter-box">
+          <br>
+          <span uk-icon="file-text"></span>
+          <a href="{{newAnnouncement.fileUrl}}">
+            {{fileName}} </a>
+          <a uk-icon="icon: trash" (click)="deleteRefrence()"></a>
+        </div>
+
+
+
+
+
+        <div class="uk-margin" *ngIf="!updateId">
+          <button class="uk-button uk-button-secondary" (click)="addAnnouncement()">
+            Add Announcement
+          </button>
+        </div>
+        <div class="uk-margin" *ngIf="updateId">
+          <button class="uk-button uk-button-secondary" (click)="updateAnnouncement()">
+            update Announcement
+          </button>
+        </div>
+      </fieldset>
+    </form>
+
+
+  </div>
+</div>
+<br><br>

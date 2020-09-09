@@ -1,0 +1,22 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0 20px;
+}
+
+table tr td {
+  padding: 10px 15px !important;
+  background-color: white;
+}
+
+tr {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.uk-table td {
+  vertical-align: middle;
+}
+
+.uk-table th {
+  padding: 1px 12px;
+}

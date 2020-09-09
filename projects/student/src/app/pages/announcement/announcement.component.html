@@ -1,0 +1,18 @@
+<app-topnav></app-topnav>
+<div class="uk-container">
+  <div uk-grid>
+    <div class="uk-width-1-1@m">
+      <table class="uk-table">
+        <tbody>
+          <tr *ngFor="let announc of allAnnouncement">
+            <td>
+              <h4 class="uk-margin-remove">{{announc.title}}</h4>
+              <span> {{announc.teacherId.teacherName}}</span> <br>
+              <span>{{announc.time | date }} </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

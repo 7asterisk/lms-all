@@ -1,0 +1,73 @@
+<br>
+<div class="uk-container">
+  <div>
+    <ul class="uk-breadcrumb">
+      <li><a>{{courseName}}</a></li>
+      <li><span>Quiz</span></li>
+    </ul>
+    <div class="uk-card uk-card-default uk-card-body">
+      <button class="uk-button" [routerLink]="[ '/tr/course/create-quiz',{courseId:courseId,subBlockId:subBlockId} ]">
+        Create Quiz</button>
+    </div>
+
+  </div>
+  <div uk-grid>
+    <div class="uk-width-1-1@m">
+      <table class="uk-table">
+        <thead>
+          <tr style="box-shadow: none;">
+            <th>Title</th>
+            <th>Deadline</th>
+            <th>Quetions</th>
+            <th>Out Of</th>
+            <th>Attempts</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="quiz-row" *ngFor="let quiz of allQuiz">
+            <td>{{quiz.quizTitle  }}</td>
+            <td>{{quiz.deadLine | date}}</td>
+            <td>{{quiz.noOfQue}}</td>
+            <td>{{quiz.outOf}}</td>
+            <td>{{quiz.noOfAttempt}}</td>
+            <td>
+              <button class="uk-button uk-button-link"
+                [routerLink]="[ '/tr/course/quiz-submission',{courseId:courseId,subBlockId:subBlockId,quizId:quiz._id} ]">
+                {{quiz.submission.length}}
+                Submission
+              </button>
+            </td>
+            <td>
+              <div class="uk-inline">
+                <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
+                <div uk-dropdown="mode: click">
+                  <ul class="uk-list">
+                    <li>
+                      <a
+                        [routerLink]="[ '/tr/course/create-quiz',{courseId:courseId,subBlockId:subBlockId,quizId:quiz._id} ]">
+                        <span uk-icon="pencil"></span> &nbsp;&nbsp;
+                        Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a (click)="deleteQuiz(quiz._id)">
+                        <span uk-icon="trash"></span> &nbsp;&nbsp;
+                        Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="uk-width-expand ">
+
+    </div>
+  </div>
+
+</div>
+<br>

@@ -1,0 +1,84 @@
+<br>
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Assingment Submission</span></li>
+  </ul>
+  <div>
+    <div>
+      <ul uk-tab style="margin-bottom: -20px;">
+        <li><a href="#">Submited student</a></li>
+        <li><a href="#">not Submited</a></li>
+      </ul>
+      <ul class="uk-switcher uk-margin">
+        <li>
+          <table class="uk-table">
+            <thead>
+              <tr style="box-shadow: none;">
+                <th>student Name</th>
+                <th>submited file</th>
+                <th>Submited time</th>
+                <th>status</th>
+                <th>marks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="quiz-row" href="#submission-modal" uk-toggle *ngFor="let sub of allSubmission"
+                (click)="addMarks(sub)">
+                <td>{{sub.studentId.studentName  }}</td>
+                <td> <a href="{{sub.submissionUrl}}"> {{assingmentTitle}} </a> </td>
+                <td>{{sub.submissionDate | date:'medium'}}</td>
+                <td *ngIf="sub.marks">Checked</td>
+                <td *ngIf="!sub.marks">Not Checked</td>
+                <td>{{sub.marks}}/{{outOf}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </li>
+        <li>
+
+
+          <table class="uk-table">
+            <tbody>
+              <tr *ngFor="let student of notSubmited">
+                <td>{{student.studentName}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+<div id="submission-modal" class="uk-flex-top" uk-modal>
+  <form class="uk-card uk-card-default uk-card-body uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <fieldset class="uk-fieldset" *ngIf="toAssist">
+
+      <legend class="uk-legend">Assging Marks</legend>
+
+      <p>Name: <span class="uk-text-bold"> {{toAssist.studentId.studentName}} </span> </p>
+      <p>Submited at: <span class="uk-text-bold"> {{toAssist.submissionDate |date}} </span></p>
+      <div class="uk-margin">
+        <label class="uk-form-label" for="form-stacked-select">Give Marks: </label>
+        <input class="uk-input uk-width-2-5" type="number" [(ngModel)]="assingMarks.marks" name="assingment-marks">
+        <span class="uk-text-bold"> /{{outOf}} </span>
+      </div>
+      <div class="uk-margin">
+        <label class="uk-form-label" for="form-stacked-select">Give Feedback</label>
+        <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="assingMarks.feedback"></textarea>
+      </div>
+
+      <div class="uk-margin">
+        <button class="uk-button uk-button-secondary" (click)="updateSubMarks()">
+          Add Marks
+        </button>
+      </div>
+    </fieldset>
+  </form>
+
+</div>

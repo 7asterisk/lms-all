@@ -1,0 +1,24 @@
+<app-topnav></app-topnav>
+<br>
+
+<div class="uk-container uk-container-xsmall" style="background-color: #fff;">
+  <br>
+  <full-calendar deepChangeDetection="true" [options]="calendarOptions"></full-calendar>
+  <br>
+</div>
+<br><br>
+
+<div id="event-detail" class="uk-flex-top" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <p>{{selectedEvent.courseName}}</p>
+    <p>{{selectedEvent.title}}</p>
+    <p>{{selectedEvent.deadLine|date}}</p>
+    <a *ngIf="selectedEvent.eventType ==='as'" uk-toggle="target: #event-detail"
+      [routerLink]="[ '/st/course/assingment',{courseId:selectedEvent.courseId,subBlockId:blockId} ]">open Assingment
+      page</a>
+    <a *ngIf="selectedEvent.eventType ==='qz'" uk-toggle="target: #event-detail"
+      [routerLink]="[ '/st/course/quiz',{courseId:selectedEvent.courseId,subBlockId:blockId} ]">open quiz Page</a>
+  </div>
+</div>

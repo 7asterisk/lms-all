@@ -1,0 +1,65 @@
+@import "../node_modules/uikit/src/scss/variables-theme.scss";
+@import "../node_modules/uikit/src/scss/mixins-theme.scss";
+@import "../node_modules/uikit/src/scss/uikit-theme.scss";
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@700;900&display=swap');
+
+html,
+body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+html {
+  background-color: #eeee;
+}
+
+h1,
+.uk-h1,
+h2,
+.uk-h2,
+h3,
+.uk-h3,
+h4,
+.uk-h4,
+h5,
+.uk-h5,
+h6,
+.uk-h6,
+.uk-heading-small,
+.uk-heading-medium,
+.uk-heading-large,
+.uk-heading-xlarge,
+.uk-heading-2xlarge {
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.uk-button {
+  text-transform: capitalize;
+}
+
+body {
+  margin: 0;
+}
+
+
+.uk-breadcrumb>*>* {
+  display: inline-block;
+  font-size: 1.3rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.uk-breadcrumb> :nth-child(n+2):not(.uk-first-column)::before {
+  content: "/";
+  display: inline-block;
+  margin: 0 6px;
+  font-size: 1.3rem;
+  color: #999;
+}
+
+::-webkit-file-upload-button {
+  cursor: pointer;
+}

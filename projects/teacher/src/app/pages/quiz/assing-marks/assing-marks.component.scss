@@ -1,0 +1,89 @@
+.uk-card-body {
+  padding: 5px 5px;
+}
+
+.uk-input,
+.uk-select,
+.uk-textarea {
+  max-width: 100%;
+  width: 100%;
+  border: 0 none;
+  padding: 0 10px;
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  transition: 0.2s ease-in-out;
+  transition-property: color, background-color, border;
+}
+
+.uk-card-default {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.qus-nav {
+  border-style: solid;
+  padding: 15px;
+  border-width: 1px;
+  border-color: #000;
+  height: 80%;
+  background: #2a3f54;
+}
+
+.qus-sheet {
+  background: #fff;
+  padding: 30px;
+  margin-top: 10px;
+  border-style: groove;
+}
+
+
+.uk-button-secondary {
+  background-color: #169f85;
+}
+
+.uk-button-secondary:disabled,
+.uk-button-danger:disabled {
+  background-color: transparent;
+  color: #999;
+  border-color: #e5e5e5;
+}
+
+.uk-card-danger {
+  background-color: #f0506e;
+}
+
+.uk-card-danger>p {
+  color: #fff;
+}
+
+.uk-card-primary {
+  background-color: #286090;
+
+}
+
+.uk-card-primary>p {
+  color: #fff;
+}
+
+.uk-card-secondry {
+  background-color: #169f85;
+}
+
+.uk-card-secondry>p {
+  color: #fff;
+}
+
+
+
+.uk-button-primary {
+  background-color: #286090;
+}
+
+
+.options {
+  margin-top: 15px;
+  border-style: solid;
+  border-width: 1px;
+  //   border-color: #666;
+}

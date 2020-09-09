@@ -1,0 +1,27 @@
+<br>
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>notes</span></li>
+  </ul>
+
+
+  <ul uk-accordion>
+    <li class="uk-card uk-card-default uk-card-body" *ngFor="let folder of allFolder">
+      <a class="uk-accordion-title" href="#"> <span uk-icon="folder"></span> {{folder.folderName}}</a>
+      <div class="uk-accordion-content">
+
+        <ul class="uk-list">
+          <li *ngFor="let note of folder.notes ; let i = index">
+            <a href="{{note.noteUrl}}"> <span uk-icon="file-text"></span>
+              {{note.noteName}}</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+</div>
+
+
+<br><br>

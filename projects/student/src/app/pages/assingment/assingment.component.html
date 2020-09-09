@@ -1,0 +1,166 @@
+<br>
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Assingments</span></li>
+  </ul>
+
+
+  <ul uk-tab style="margin-bottom: 0px;">
+    <li><a href="#">Active</a></li>
+    <li><a href="#">InActive</a></li>
+  </ul>
+  <ul class="uk-switcher">
+    <li>
+      <table class="uk-table">
+        <thead>
+          <tr style="box-shadow: none;">
+            <th>Assingment</th>
+            <th>DeadLine</th>
+            <th>Submitted on</th>
+            <th>marks</th>
+            <th>status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="quiz-row" *ngFor="let assingment of activeAssingment">
+            <td> <a href="{{assingment.assingmentUrl}}"> {{assingment.assingmentTitle}} </a> </td>
+            <td>{{assingment.deadLine | date:'medium'}}</td>
+            <td>
+              <span
+                *ngIf="assingment.submission[0]?.submissionDate">{{assingment.submission[0]?.submissionDate | date:'medium'}}</span>
+            </td>
+            <td>
+              <span *ngIf="assingment.submission[0]?.marks">{{assingment.submission[0]?.marks}}</span>
+              <span *ngIf="!assingment.submission[0]?.marks"> - </span>
+              /{{assingment.outOf}}
+            </td>
+            <td>
+              <span *ngIf="assingment.submission[0]?.marks"> Checked </span>
+              <span *ngIf="!assingment.submission[0]?.marks && assingment.submission.length !== 0 ">Not Checked
+              </span>
+              <span *ngIf="assingment.submission.length===0 && !assingment.submission[0]?.marks">Not Submited</span>
+
+            </td>
+            <td>
+              <button class="uk-button uk-button-primary uk-button-small" uk-toggle="target: #remark"
+                (click)="submissionForm(assingment)" *ngIf="assingment.submission[0]?.marks">remark</button>
+              <button class="uk-button uk-button-primary uk-button-small"
+                *ngIf="assingment.submission.length === 0 && (assingment.deadLine>=today)"
+                uk-toggle="target: #submit-form" (click)="submissionForm(assingment)">Submit</button>
+              <button class="uk-button uk-button-primary uk-button-small " uk-toggle="target: #submit-form"
+                (click)="submissionForm(assingment)"
+                *ngIf="assingment.submission[0]?.submissionUrl && !assingment.submission[0]?.marks">
+                Edit submission
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+    <li>
+      <table class="uk-table">
+        <thead>
+          <tr style="box-shadow: none;">
+            <th>Assingment</th>
+            <th>DeadLine</th>
+            <th>Submitted On</th>
+            <th>marks</th>
+            <th>status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="quiz-row" *ngFor="let assingment of inActiveAssingment">
+            <td> <a href="{{assingment.assingmentUrl}}"> {{assingment.assingmentTitle}} </a> </td>
+            <td>{{assingment.deadLine | date:'medium'}}</td>
+            <td>
+              <span
+                *ngIf="assingment.submission[0]?.submissionDate">{{assingment.submission[0]?.submissionDate | date:'medium'}}</span>
+            </td>
+
+            <td>
+              <span *ngIf="assingment.submission[0]?.marks">{{assingment.submission[0]?.marks}}</span>
+              <span *ngIf="!assingment.submission[0]?.marks"> - </span>
+              /{{assingment.outOf}}
+            </td>
+            <td>
+              <span *ngIf="assingment.submission[0]?.marks"> Checked </span>
+              <span *ngIf="!assingment.submission[0]?.marks && assingment.submission.length !== 0 ">Not Checked
+              </span>
+              <span *ngIf="assingment.submission.length===0 && !assingment.submission[0]?.marks">Not Submited</span>
+
+            </td>
+            <td>
+              <button class="uk-button uk-button-primary uk-button-small" uk-toggle="target: #remark"
+                (click)="submissionForm(assingment)" *ngIf="assingment.submission[0]?.marks">remark</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+  </ul>
+</div>
+
+
+<div id="submit-form" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <form *ngIf="toSubmit">
+      <fieldset class="uk-fieldset">
+
+        <legend class="uk-legend">Submit Assingment</legend>
+
+        <p>Assingment <span class="uk-text-bold"> {{toSubmit.assingmentTitle}} </span> </p>
+        <p>Deadline: <span class="uk-text-bold"> {{toSubmit.deadLine |date}} </span></p>
+        <div class="uk-margin">
+          Marks: <span class="uk-text-bold">{{toSubmit.outOf}} </span>
+        </div>
+        <p>{{toSubmit.assingmentDesc}}</p>
+
+
+        <div *ngIf="!newSubmition.submissionUrl" class=" uk-placeholder uk-text-center"
+          style="width: -webkit-fill-available;" uk-form-custom>
+          <input type="file" (change)="uploadFile($event,toSubmit._id)">
+          <div class="uk-width-1-1">
+            <span uk-icon="icon: cloud-upload"></span> &nbsp;
+            <div uk-form-custom>
+              <span>select File</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="newSubmition.submissionUrl" class="chapter-box">
+          <a href="{{newSubmition.submissionUrl}}">
+            {{toSubmit.assingmentTitle}} </a>
+          <a uk-icon="icon: trash" (click)="deleteSubmission(toSubmit._id,newSubmition.submissionUrl)"></a>
+        </div>
+        <div class="uk-margin">
+          <label><input class="uk-checkbox" type="checkbox" (change)="conformClicked($event)"> by
+            checking this box I
+            conferm this submission is
+            my own work </label>
+        </div>
+
+        <div class="uk-margin">
+          <button class="uk-button uk-button-primary" [disabled]="(!newSubmition.submissionUrl || !conform) "
+            (click)="addSubmission(toSubmit._id)">
+            Add Submission
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+
+<div id="remark" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <h4>{{toSubmit?.assingmentTitle}}</h4>
+    <p> marks: <strong> {{toSubmit?.submission[0]?.marks}}/{{toSubmit?.outOf}} </strong></p>
+    <a href="{{toSubmit?.submission[0]?.submissionUrl}}">your submission</a>
+    <p> Remark: {{toSubmit?.submission[0]?.feedback}}</p>
+  </div>
+</div>

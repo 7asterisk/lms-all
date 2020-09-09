@@ -1,0 +1,52 @@
+<!-- <app-topnav></app-topnav> -->
+<br>
+<div class="uk-container">
+  <div class="uk-text-center uk-flex-center uk-flex" uk-grid>
+    <div class="uk-width-1-3@m   ">
+      <div class="uk-card uk-card-default uk-card-body">
+        <form #loginForm="ngForm" (submit)="onSubmit(loginForm)">
+          <fieldset class="uk-fieldset">
+
+            <legend class="uk-legend">Login</legend>
+
+            <div class="uk-margin">
+              <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                <input class="uk-input" type="email" name="emailId" ngModel placeholder="Email-Id">
+              </div>
+            </div>
+            <div class="uk-margin">
+              <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                <input class="uk-input" type="password" name="password" ngModel placeholder="password">
+              </div>
+            </div>
+          </fieldset>
+          <button class="uk-button uk-button-primary" type="submit">Login</button>
+        </form>
+        <br>
+        <button class="uk-button uk-button-link" uk-toggle="target: #forgot-password">Forgot Password !</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="forgot-password" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+    <p class="uk-modal-title">Request for password reset.</p>
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+    <form>
+      <fieldset class="uk-fieldset">
+        <div class="uk-margin">
+          <div class="uk-inline">
+            <span class="uk-form-icon" uk-icon="icon: mail"></span>
+            <input class="uk-input" type="email" name="forget-emailId" [(ngModel)]="forgotEmail" placeholder="Email-Id">
+          </div>
+        </div>
+      </fieldset>
+      <button class="uk-button uk-button-primary" type="submit" (click)="resetRequest()">request Reset</button>
+    </form>
+  </div>
+</div>

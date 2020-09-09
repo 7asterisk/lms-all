@@ -1,0 +1,41 @@
+<mat-sidenav-container class="example-container" autosize>
+  <mat-sidenav #sidenav mode="side" opened fixedInViewport="options.value.fixed">
+    <!-- <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p> -->
+    <ul class="uk-list uk-link-text sidenav-link">
+      <li><a [routerLink]="[ '/home' ]">
+          <img src="https://img.icons8.com/pastel-glyph/64/000000/home.png" />
+          <span *ngIf="fullNav"> Home </span>
+        </a></li>
+      <li><a [routerLink]="[ '/courses/notes' ]">
+          <img src="https://img.icons8.com/dotty/80/000000/copybook.png" />
+          <span *ngIf="fullNav"> Notes</span>
+        </a></li>
+      <li><a [routerLink]="[ '/courses/assingment' ]">
+          <img src="https://img.icons8.com/carbon-copy/100/000000/task.png" />
+          <span *ngIf="fullNav"> Assingment</span>
+        </a></li>
+      <li><a [routerLink]="[ '/courses/quiz' ]">
+          <img src="https://img.icons8.com/ios/50/000000/quiz.png" />
+          <span *ngIf="fullNav"> Quiz </span>
+        </a></li>
+      <li> <a [routerLink]="[ '/courses/discussion' ]">
+          <img src="https://img.icons8.com/carbon-copy/100/000000/speaker-notes.png" />
+          <span *ngIf="fullNav"> Discussion </span>
+        </a> </li>
+      <li> <a [routerLink]="[ '/courses/about-course' ]">
+          <img src="https://img.icons8.com/cotton/64/000000/info.png" />
+          <span *ngIf="fullNav"> About Course </span>
+        </a> </li>
+
+      <li style="text-align: right; padding-right: 40px;">
+        <a class="colaps-btn" *ngIf="fullNav" (click)="fullNav=!fullNav" uk-icon="icon: chevron-left;ratio: 2"></a>
+        <a class="colaps-btn" *ngIf="!fullNav" (click)="fullNav=!fullNav" uk-icon="icon: chevron-right;ratio: 2"></a>
+      </li>
+    </ul>
+  </mat-sidenav>
+
+  <mat-sidenav-content style="background: #fff;">
+    <app-topnav></app-topnav>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

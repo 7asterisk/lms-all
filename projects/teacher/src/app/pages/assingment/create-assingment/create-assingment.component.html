@@ -1,0 +1,66 @@
+<br>
+<div class="uk-container uk-container-xsmall">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Create Assingment</span></li>
+  </ul>
+  <form class="uk-card uk-card-default uk-card-body">
+    <fieldset class="uk-fieldset">
+
+      <legend class="uk-legend">Add New Assingment</legend>
+
+      <div class="uk-margin">
+        <label class="uk-form-label" for="form-stacked-select">Add title</label>
+        <input class="uk-input" type="text" name="aname" [(ngModel)]="newAssingment.assingmentTitle"
+          placeholder="Assingment Title">
+      </div>
+
+
+      <div *ngIf="!newAssingment.assingmentUrl" class=" uk-placeholder uk-text-center"
+        style="width: -webkit-fill-available;" uk-form-custom>
+        <input type="file" (change)="uploadFile($event)">
+        <div class="uk-width-1-1">
+          <span uk-icon="icon: cloud-upload"></span> &nbsp;
+          <div uk-form-custom>
+            <span>select File</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="newAssingment.assingmentUrl" class="chapter-box">
+        <a href="{{newAssingment.assingmentUrl}}">
+          {{fileName}} </a>
+        <a uk-icon="icon: trash" (click)="deleteRefrence()"></a>
+      </div>
+
+
+
+
+      <div class="uk-grid-small" uk-grid>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="form-stacked-select">Add Deadline</label>
+          <input class="uk-input " type="date" name="deadline" [(ngModel)]="newAssingment.deadLine">
+        </div>
+        <div class=" uk-width-1-2@s">
+          <label class="uk-form-label" for="form-stacked-select">Marks</label>
+          <input class="uk-input" type="number" name="marks" placeholder="outof" [(ngModel)]="newAssingment.outOf">
+        </div>
+      </div>
+
+      <div class="uk-margin">
+        <label class="uk-form-label" for="form-stacked-select">Add Description</label>
+        <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="newAssingment.assingmentDesc"
+          placeholder="Assingment Description"></textarea>
+      </div>
+
+      <div class="uk-margin">
+        <button class="uk-button uk-button-secondary" (click)="addAssingment()">
+          Add Assingment
+        </button>
+      </div>
+    </fieldset>
+  </form>
+
+
+</div>
+<br><br>

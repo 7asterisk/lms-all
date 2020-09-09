@@ -1,0 +1,172 @@
+<br>
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>notes</span></li>
+  </ul>
+
+  <div class="uk-card uk-card-default uk-card-body">
+    <button class="uk-button" (click)="createNewFolder = true">
+
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 172 172"
+        style=" fill:#000000;">
+        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+          stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+          font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+          <path d="M0,172v-172h172v172z" fill="none"></path>
+          <g fill="#333333">
+            <path
+              d="M28.66667,28.66667c-7.88333,0 -14.33333,6.45 -14.33333,14.33333v86c0,7.88333 6.45,14.33333 14.33333,14.33333h57.90723c-0.33683,-2.3435 -0.57389,-4.73 -0.57389,-7.16667c0,-2.43667 0.23706,-4.82317 0.57389,-7.16667h-57.90723v-71.66667h114.66667v29.24056c5.06683,0.72383 9.87567,2.20386 14.33333,4.3252v-33.56576c0,-7.88333 -6.45,-14.33333 -14.33333,-14.33333h-57.33333l-14.33333,-14.33333zM136.22265,100.44531c-9.14914,0.00269 -18.29504,3.50697 -25.29329,10.49805c-6.99467,6.99467 -10.52604,16.12029 -10.52604,25.27929c0,9.159 3.53137,18.2918 10.52604,25.2793c13.98933,13.98933 36.58325,13.98933 50.57259,0c13.98933,-13.98933 13.98933,-36.59726 0,-50.58659c-6.9875,-6.98033 -16.13015,-10.47274 -25.2793,-10.47005zM129.08399,114.68066h14.33333v14.33333h14.33333v14.33333h-14.33333v14.33333h-14.33333v-14.33333h-14.33333v-14.33333h14.33333z">
+            </path>
+          </g>
+        </g>
+      </svg>
+      &nbsp;
+      add Folder </button>
+  </div>
+
+  <div *ngIf="createNewFolder" class="uk-card uk-card-default uk-card-body">
+
+    <div class="uk-margin">
+      <input class="uk-input" type="text" #folder ngModel (keyup.enter)="addFolder(folder.value)" name="folder"
+        placeholder="Folder Name">
+    </div>
+  </div>
+
+  <ul class="uk-list">
+
+    <li class="uk-open uk-card uk-card-default uk-card-body" *ngFor="let folder of allFolder;let j=index">
+      <div class="title">
+        <span [ngClass]="{ 'uk-hidden': renameId === folder._id}">
+          <span uk-icon="folder"></span> {{folder.folderName}}
+        </span>
+        <input *ngIf="renameId === folder._id" class="uk-input" type="text" [(ngModel)]="allFolder[j].folderName"
+          (keyup.enter)="updateNote(folder)" name="file" placeholder="File Name">
+        <div class="uk-inline" *ngIf="renameId != folder._id" style="float: right; margin-top: -7px;">
+
+          <div uk-form-custom>
+            <input type="file" (change)="uploadFile($event,folder)">
+            <button class=" form-custom-button uk-button">
+              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 172 172"
+                style=" fill:#000000;">
+                <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                  stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                  font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                  style="mix-blend-mode: normal">
+                  <path d="M0,172v-172h172v172z" fill="none"></path>
+                  <g fill="#333333">
+                    <path
+                      d="M20.64,0v165.12h96.32c5.75125,4.32688 12.91344,6.88 20.64,6.88c18.96031,0 34.4,-15.43969 34.4,-34.4c0,-14.05562 -8.53281,-26.16281 -20.64,-31.4975v-55.9l-0.9675,-1.075l-48.16,-48.16l-1.075,-0.9675zM27.52,6.88h68.8v48.16h48.16v48.9125c-2.23062,-0.45687 -4.515,-0.7525 -6.88,-0.7525c-18.96031,0 -34.4,15.43969 -34.4,34.4c0,7.75344 2.63375,14.87531 6.9875,20.64h-82.6675zM103.2,11.825l36.335,36.335h-36.335zM137.6,110.08c15.23813,0 27.52,12.28188 27.52,27.52c0,15.23813 -12.28187,27.52 -27.52,27.52c-15.23812,0 -27.52,-12.28187 -27.52,-27.52c0,-15.23812 12.28188,-27.52 27.52,-27.52zM134.16,120.4v13.76h-13.76v6.88h13.76v13.76h6.88v-13.76h13.76v-6.88h-13.76v-13.76z">
+                    </path>
+                  </g>
+                </g>
+              </svg>
+              &nbsp;
+            </button>
+          </div>
+
+          &nbsp; &nbsp;
+          <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
+          <div uk-dropdown="mode: click">
+            <ul class="uk-list">
+              <li>
+                <a (click)="renameId=folder._id">
+                  <span uk-icon="pencil"></span> &nbsp;&nbsp;
+                  Rename
+                </a>
+              </li>
+              <li>
+                <a (click)="deleteFolder(folder._id,folder)">
+                  <span uk-icon="trash"></span> &nbsp;&nbsp;
+                  Delete
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+
+        <ul class="uk-list uk-list-striped">
+          <li *ngFor="let note of folder.notes ; let i = index">
+            <a [ngClass]="{ 'uk-hidden': renameId === note._id}" href="{{note.noteUrl}}"> <span
+                uk-icon="file-text"></span>
+              {{note.noteName}}</a>
+            <input *ngIf="renameId === note._id" class="uk-input" type="text"
+              [(ngModel)]="allFolder[j].notes[i].noteName" (keyup.enter)="updateNote(folder)" name="file"
+              placeholder="File Name">
+            <div class="uk-inline" *ngIf="renameId != note._id" style="float: right;">
+              <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
+              <div uk-dropdown="mode: click">
+                <ul class="uk-list">
+                  <li>
+                    <a (click)="renameId=note._id">
+                      <span uk-icon="pencil"></span> &nbsp;&nbsp;
+                      Rename
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="deleteNote(folder,i)">
+                      <span uk-icon="trash"></span> &nbsp;&nbsp;
+                      Delete
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+
+</div>
+<br>
+
+
+<div id="edit-note" uk-modal>
+  <!-- <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <form>
+      <fieldset class="uk-fieldset">
+
+        <legend class="uk-legend">Update Notes</legend>
+        <div>
+          <label class="uk-form-label" for="form-stacked-select">Add title</label>
+          <input class="uk-input" type="text" name="cname" [(ngModel)]="newNote.noteTitle" placeholder="Note Title">
+        </div>
+
+        <div *ngIf="!newNote.noteUrl" class=" uk-placeholder uk-text-center" style="width: -webkit-fill-available;"
+          uk-form-custom>
+          <input type="file" (change)="uploadFile($event)">
+          <div class="uk-width-1-1">
+            <span uk-icon="icon: cloud-upload"></span> &nbsp;
+            <div uk-form-custom>
+              <span>select File</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="newNote.noteUrl" class="chapter-box">
+          <a href="{{newNote.noteUrl}}"> <img src="https://img.icons8.com/fluent/48/000000/pdf.png" />
+            {{newNote.noteTitle}} </a>
+          <a uk-icon="icon: trash" (click)="deleteRefrence()"></a>
+        </div>
+
+        <div>
+          <label class="uk-form-label" for="form-stacked-select">Add Description</label>
+          <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="newNote.noteDesc"
+            placeholder="Note Description"></textarea>
+        </div>
+
+        <div class="uk-margin">
+          <button class="uk-button uk-button-secondary" (click)="updateNote()">
+            Update Note
+          </button>
+        </div>
+      </fieldset>
+    </form>
+
+
+  </div> -->
+</div>

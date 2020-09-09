@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ecommerce-5a6fd": {
+      "hosting": {
+        "lms": [
+          "ecommerce-5a6fd"
+        ]
+      }
+    }
+  }
+}

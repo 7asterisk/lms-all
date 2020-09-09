@@ -1,0 +1,49 @@
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Discussion Forums</span></li>
+  </ul>
+
+  <div class="uk-card uk-card-body uk-card-default ">
+    <a class="uk-button uk-button-primary" href="#newTopic" uk-toggle>New Topic</a>
+  </div>
+  <a *ngFor="let disctopic of allDiscussion"
+    [routerLink]="[ '/st/course/discussion',{courseId:courseId,subBlockId:subBlockId,discId:disctopic._id}]"
+    class="uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle">
+    <h4 class="uk-card-title"><span class="uk-link-heading">{{disctopic.title}}</span></h4>
+    <span>{{disctopic.studentId.studentName}}</span>
+  </a>
+</div>
+
+
+<div id="newTopic" uk-modal>
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <div class="uk-modal-header">
+      <h2 class="uk-modal-title">Modal Title</h2>
+    </div>
+    <div class="uk-modal-body">
+      <form class="uk-form-stacked">
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">Title</label>
+          <div class="uk-form-controls">
+            <input class="uk-input" id="form-stacked-text" [(ngModel)]="newDiscussion.title" name="title" type="text"
+              placeholder="Write a descriptive title">
+          </div>
+        </div>
+
+
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">Body</label>
+          <textarea class="uk-textarea" rows="5" name="body" placeholder="Provide supporting details or Context"
+            [(ngModel)]="newDiscussion.text"></textarea>
+        </div>
+
+      </form>
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+      <button class="uk-button uk-button-primary" type="button" (click)="addDiscussion()">Post</button>
+    </div>
+  </div>
+</div>

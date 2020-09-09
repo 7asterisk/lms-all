@@ -1,0 +1,91 @@
+<div class="uk-container uk-container-xsmall">
+
+  <br>
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Discussion</span></li>
+  </ul>
+
+  <ul class="uk-comment-list">
+    <h4>{{discTopic?.title}}</h4>
+    <li>
+      <article class="uk-comment  uk-comment-primary uk-visible-toggle">
+        <header class="uk-comment-header uk-position-relative">
+          <h4 class="uk-comment-title uk-margin-remove">{{discTopic?.teacherId?.teacherName}} </h4>
+          <h4 class="uk-comment-title uk-margin-remove">{{discTopic?.studentId?.studentName}} </h4>
+          <p class="uk-comment-meta uk-margin-remove">{{discTopic?.time|date :'medium'}} </p>
+          <div class="uk-position-top-right uk-position-small uk-hidden-hover">
+            <a class="uk-link-muted" *ngIf="discTopic?.studentId?._id == studentId "
+              (click)="deleteDiscTopic(discTopic._id)">delete &nbsp; &nbsp;</a></div>
+        </header>
+        <div class=" uk-comment-body">
+          <p>{{discTopic?.text}}</p>
+        </div>
+      </article>
+
+    </li>
+    <li *ngFor="let disc of allDiscussion">
+      <article class="uk-comment  uk-comment-primary uk-visible-toggle">
+        <header class="uk-comment-header uk-position-relative">
+          <h4 class="uk-comment-title uk-margin-remove">{{disc?.teacherId?.teacherName}} </h4>
+          <h4 class="uk-comment-title uk-margin-remove">{{disc?.studentId?.studentName}} </h4>
+          <p class="uk-comment-meta uk-margin-remove-top">{{disc.time|date :'medium'}} </p>
+          <div class="uk-position-top-right uk-position-small uk-hidden-hover">
+            <a class="uk-link-muted" *ngIf="disc?.studentId?._id == studentId "
+              (click)="deleteDiscussion(disc._id)">delete &nbsp; &nbsp;</a>
+            <a class="uk-link-muted" (click)="openReply(disc._id)">Reply</a></div>
+        </header>
+        <div class=" uk-comment-body">
+          <p>{{disc.text}}</p>
+        </div>
+      </article>
+
+
+      <ul>
+        <li *ngFor="let reply of disc.replies">
+          <article class="uk-comment  uk-comment-primary uk-visible-toggle">
+            <header class="uk-comment-header uk-position-relative">
+              <h4 class="uk-comment-title uk-margin-remove">{{reply?.teacherId?.teacherName}} </h4>
+              <h4 class="uk-comment-title uk-margin-remove">{{reply?.studentId?.studentName}} </h4>
+              <p class="uk-comment-meta uk-margin-remove-top">{{reply.time|date :'medium'}} </p>
+              <div class="uk-position-top-right uk-position-small uk-hidden-hover">
+                <a class="uk-link-muted" *ngIf="reply?.studentId?._id == studentId"
+                  (click)="deleteReply(disc,reply._id)">delete</a> &nbsp; &nbsp;
+                <a class="uk-link-muted" (click)="openReply(disc._id)">Reply</a>
+              </div>
+            </header>
+            <div class=" uk-comment-body">
+              <p>{{reply?.text}}</p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <div id="{{disc._id}}">
+            <div *ngIf="replyId == disc?._id">
+              <div>
+                <textarea class="uk-textarea" rows="5" [(ngModel)]="newReply.text" name="comment"
+                  placeholder="leave a Comment"></textarea>
+              </div>
+              <div class="uk-text-right">
+                <button class="uk-button uk-button-primary" (click)="addReply(disc)">Comment</button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+
+
+
+    </li>
+  </ul>
+  <br>
+  <div>
+    <div class="uk-margin">
+      <textarea class="uk-textarea" rows="5" [(ngModel)]="newDiscussion.text" name="comment"
+        placeholder="leave a Comment"></textarea>
+    </div>
+    <button class="uk-button uk-button-primary" (click)="addDiscussion()" style="float: right;">Comment</button>
+  </div>
+</div>
+<br><br>

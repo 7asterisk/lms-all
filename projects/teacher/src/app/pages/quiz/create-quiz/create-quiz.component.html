@@ -1,0 +1,140 @@
+<br>
+<div class="uk-container">
+  <ul class="uk-breadcrumb">
+    <li><a>{{courseName}}</a></li>
+    <li><span>Create quiz</span></li>
+  </ul>
+
+  <form class="uk-card uk-card-default uk-card-body">
+    <fieldset class="uk-fieldset">
+
+      <legend class="uk-legend">Add New Quiz
+        <button *ngIf="!toUpdate" class="uk-button uk-button-secondary" style="float: right;" (click)="addQuiz()">
+          Schedule Quiz
+        </button>
+        <button *ngIf="toUpdate" class="uk-button uk-button-secondary" style="float: right;" (click)="updateQuiz()">
+          Update Quiz
+        </button>
+      </legend>
+
+      <div class="uk-margin" uk-grid>
+
+        <div class="uk-width-1-3@s">
+          <label class="uk-form-label" for="form-stacked-select">Add title</label>
+          <input class="uk-input" type="text" name="cname" [(ngModel)]="newQuiz.quizTitle" placeholder="Quiz Title">
+        </div>
+        <div class="uk-width-1-3@s">
+          <label class="uk-form-label" for="form-stacked-select">Activate on</label>
+          <input class="uk-input" type="datetime-local" [(ngModel)]="newQuiz.activateTime" name="activation time">
+        </div>
+        <div class="uk-width-1-3@s">
+          <label class="uk-form-label" for="form-stacked-select">Deadline</label>
+          <input class="uk-input" type="datetime-local" [(ngModel)]="newQuiz.deadLine" name="deadline">
+        </div>
+      </div>
+      <div class="uk-margin" uk-grid>
+
+        <div class="uk-width-1-5@s">
+          <label class="uk-form-label" for="form-stacked-select">Quiz Time in min.</label>
+          <input class="uk-input" name=time [(ngModel)]="newQuiz.qTime" type="number">
+        </div>
+        <div class="uk-width-1-5@s">
+          <label class="uk-form-label" for="form-stacked-select">Nos. of Attempt</label>
+          <input class="uk-input" name=attempt [(ngModel)]="newQuiz.noOfAttempt" type="number">
+        </div>
+
+        <div class="uk-width-1-5@s">
+          <label class="uk-form-label" for="form-stacked-select">Marks Distribution</label>
+          <select [(ngModel)]="marksType" name="marksType" class="uk-select">
+            <option value="1">evenly</option>
+            <option value="2">maualy</option>
+          </select>
+        </div>
+
+        <div class="uk-width-1-5@s" *ngIf="marksType=='1'">
+          <label class="uk-form-label" for="form-stacked-select">Total Marks</label>
+          <input class="uk-input" name=marks [(ngModel)]="newQuiz.outOf" type="number">
+        </div>
+        <div style="align-self: center;" *ngIf="Ques.length >= 1" class="uk-width-1-5@s">
+          <p>{{Ques.length}} Quetions Added </p>
+        </div>
+        <div class="uk-width-1-5@s" *ngIf="Ques.length < 1">
+          <div class="uk-margin">
+            <label class="uk-form-label"> <B> NO</B> Question Added </label>
+            <button class="uk-button uk-button-primary  " (click)="addQues()">Add a
+              Question</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+  <div class="uk-grid-collapse uk-child-width-1-2@s" uk-grid>
+    <div *ngFor="let ques of Ques; let j=index">
+      <div class="questionBox">
+
+        <button (click)="deleteQues(j)" class="uk-close-large" style="float: right;" type="button" uk-close></button>
+        <div uk-grid>
+          <div class="uk-width-2-3@s" style="margin-left: -30px;">
+            <label class="uk-form-label" for="form-stacked-select">Question type</label>
+            <select name="" id="" #qusType (change)="selectedType(qusType.value,j)" class="uk-select">
+              <option value="1" ng-model>single correct Ans</option>
+              <option value="2" ng-model>Multipal correct Ans</option>
+              <option value="3" ng-model>Subjective</option>
+            </select>
+          </div>
+          <div class="uk-width-1-3@s" *ngIf="marksType !=='1'">
+            <label class="uk-form-label" for="form-stacked-select">Assing Marks</label>
+            <input class="uk-input" name=marks [(ngModel)]="ques.assingedMarks" type="number">
+          </div>
+        </div>
+        <div class="uk-margin">
+          <textarea class="uk-textarea" rows="3" name="q" placeholder="Enter Question"
+            [(ngModel)]="ques.que"></textarea>
+        </div>
+
+
+        <div class="single-selective" *ngIf="ques.queType==1">
+          <div class="uk-margin" *ngFor="let op of ques.ops ;let i=index">
+            <input class="uk-input" type="text" name="op" [(ngModel)]="op.op" placeholder="Option {{i}} ">
+          </div>
+          <div class="uk-margin">
+            <label class="uk-form-label" for="form-stacked-select">select Answer</label>
+            <select class="uk-select" [(ngModel)]="ques.anss[0]" name="ans">
+              <option *ngFor="let op of  ques.ops;let i=index" value="{{op.op}}">{{op.op}}</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="multi-selective" *ngIf="ques.queType==2">
+
+          <div uk-grid *ngFor="let op of ques.ops ;let i=index">
+            <div class="uk-width-4-5">
+              <input class="uk-input" type="text" name="op" [(ngModel)]="op.op" placeholder="Option {{i}} ">
+            </div>
+            <div>
+              <a uk-icon="icon: check" (click)="addAns(j,op)" *ngIf="ques.anss.indexOf(op.op)===-1"></a>
+              <a uk-icon="icon: close" (click)="removeAns(j,op)" *ngIf="ques.anss.indexOf(op.op)!==-1"></a>
+            </div>
+          </div>
+          <div class="uk-margin">
+            <label class="uk-form-label" for="form-stacked-select">selected Answers</label>
+            <p *ngFor="let ans of ques.anss;let i=index">{{ans}}</p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div *ngIf="Ques.length >= 1">
+      <div class="uk-flex uk-flex-center uk-flex-middle" style="height: 100%">
+        <button class="uk-button uk-button-primary " (click)="addQues()">Add More
+          Question</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
