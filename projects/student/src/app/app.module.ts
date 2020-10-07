@@ -28,12 +28,15 @@ import { DiscussionComponent } from './pages/discussion/discussion.component';
 import { AboutCourseComponent } from './pages/about-course/about-course.component';
 import { QuizDetailComponent } from './pages/quiz/quiz-detail/quiz-detail.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { QuizSubmissionComponent } from './pages/quiz/quiz-submission/quiz-submission.component';
 import { GradeComponent } from './pages/grade/grade.component';
 import { DescTopicComponent } from './pages/discussion/desc-topic/desc-topic.component';
 import { AnnouncementComponent } from './pages/announcement/announcement.component';
 import { CalenderComponent } from './pages/calender/calender.component';
+import { PrimengModule } from './primeng/primeng.module';
+import { PolesComponent } from './pages/poles/poles.component';
+import { NgProgressModule } from 'ngx-progressbar';
 
 
 
@@ -62,6 +65,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DescTopicComponent,
     AnnouncementComponent,
     CalenderComponent,
+    PolesComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,13 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatRadioModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    FullCalendarModule
+    FullCalendarModule,
+    PrimengModule,
+    NgProgressModule,
+    NgProgressModule.withConfig({
+      spinnerPosition: 'right',
+      color: '#673AB7'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

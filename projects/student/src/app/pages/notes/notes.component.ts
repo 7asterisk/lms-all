@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgProgressComponent } from 'ngx-progressbar';
 import { DataService } from '../../data.service';
 @Component({
   selector: 'app-notes',
@@ -17,8 +18,16 @@ export class NotesComponent implements OnInit {
   fileType;
   uploadPercent;
   idToUpdate;
+
+
+  @ViewChild(NgProgressComponent) progressBar: NgProgressComponent;
+
+  ngAfterViewInit() {
+    this.progressBar.start();
+  }
+
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.courseId = params.courseId;
       this.blockId = params.subBlockId;
       this.getNotes();
@@ -41,6 +50,7 @@ export class NotesComponent implements OnInit {
     ).subscribe(data => {
       // console.log(data);
       this.allFolder = data;
+      this.progressBar.complete();
     });
   }
 }

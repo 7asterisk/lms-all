@@ -1,91 +1,162 @@
-<div class="uk-container uk-container-xsmall">
+<div class="container is-fluid">
 
   <br>
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>Discussion</span></li>
-  </ul>
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Discussion</li>
+    </ul>
+  </nav>
 
-  <ul class="uk-comment-list">
-    <h4>{{discTopic?.title}}</h4>
-    <li>
-      <article class="uk-comment  uk-comment-primary uk-visible-toggle">
-        <header class="uk-comment-header uk-position-relative">
-          <h4 class="uk-comment-title uk-margin-remove">{{discTopic?.teacherId?.teacherName}} </h4>
-          <h4 class="uk-comment-title uk-margin-remove">{{discTopic?.studentId?.studentName}} </h4>
-          <p class="uk-comment-meta uk-margin-remove">{{discTopic?.time|date :'medium'}} </p>
-          <div class="uk-position-top-right uk-position-small uk-hidden-hover">
-            <a class="uk-link-muted" *ngIf="discTopic?.teacherId?._id == teacherId "
-              (click)="deleteDiscTopic(discTopic._id)">delete &nbsp; &nbsp;</a></div>
-        </header>
-        <div class=" uk-comment-body">
-          <p>{{discTopic?.text}}</p>
+  <h4 class="is-size-4">{{discTopic?.title}}</h4>
+  <br>
+  <article class="media">
+    <div class="media-content">
+      <div class="content">
+        <div>
+          <p>
+            <strong>{{discTopic?.teacherId?.teacherName}}</strong>
+            <strong>{{discTopic?.studentId?.studentName}} </strong>
+            &nbsp;
+            <small> {{discTopic?.time|date :'d/M/yy, h:mm a'}}</small>
+          </p>
+          <p>
+            {{discTopic?.text}}
+          </p>
+          <div>
+            <small class="vote-count">{{discTopic?.upvote?.length}}</small>
+            <button pButton pRipple type="button" icon="pi pi-thumbs-up" class="p-button-rounded"
+              (click)="upVoteDiscTopic()" [ngClass]="{'p-button-text':!hasUpVoted(discTopic)}"></button>
+          </div>
         </div>
-      </article>
+      </div>
+    </div>
+    <div class="media-right">
+      <button pButton pRipple type="button" icon="pi pi-trash" *ngIf="discTopic?.teacherId?._id == teacherId "
+        class="p-button-rounded p-button-danger p-button-text" (click)="deleteDiscTopic(discTopic._id)"></button>
+    </div>
+  </article>
 
-    </li>
-    <li *ngFor="let disc of allDiscussion">
-      <article class="uk-comment  uk-comment-primary uk-visible-toggle">
-        <header class="uk-comment-header uk-position-relative">
-          <h4 class="uk-comment-title uk-margin-remove">{{disc?.teacherId?.teacherName}} </h4>
-          <h4 class="uk-comment-title uk-margin-remove">{{disc?.studentId?.studentName}} </h4>
-          <p class="uk-comment-meta uk-margin-remove">{{disc.time|date :'medium'}} </p>
-          <div class="uk-position-top-right uk-position-small uk-hidden-hover">
-            <a class="uk-link-muted" *ngIf="disc?.teacherId?._id == teacherId "
-              (click)="deleteDiscussion(disc._id)">delete &nbsp; &nbsp;</a>
-            <a class="uk-link-muted" (click)="openReply(disc._id)">Reply</a></div>
-        </header>
-        <div class=" uk-comment-body">
-          <p>{{disc.text}}</p>
+  <article class="media" *ngFor="let disc of allDiscussion">
+    <div class="media-content">
+      <div class="content">
+        <div>
+          <p>
+            <strong>{{disc?.teacherId?.teacherName}}</strong>
+            <strong>{{disc?.studentId?.studentName}} </strong> &nbsp;
+            <small>
+              {{disc?.time|date :'d/M/yy, h:mm a'}}</small>
+          </p>
+          <div [innerHTML]="disc.text"></div>
+          <img [src]="disc?.imgUrl">
+          <br>
+          <small class="vote-count">{{disc?.upvote?.length}}</small>
+          <button pButton pRipple type="button" icon="pi pi-thumbs-up" class="p-button-rounded"
+            (click)="upVoteDisc(disc._id)" [ngClass]="{'p-button-text':!hasUpVoted(disc)}"></button>
+          <button pButton type="button" styleClass="p-button-sm" label="Reply" class="p-button-text"
+            (click)="openReply(disc._id)"></button>
         </div>
-      </article>
+      </div>
 
+      <article class="media" *ngFor="let reply of disc.replies">
+        <div class="media-content">
+          <div class="content">
+            <div>
+              <p>
+                <strong>{{reply?.teacherId?.teacherName}}</strong>
+                <strong>{{reply?.studentId?.studentName}}</strong> &nbsp;
+                <small>{{reply.time|date :'d/M/yy, h:mm a'}}</small>
+              </p>
+              <p>
+                {{reply?.text}}
+              </p>
+              <small class="vote-count">{{reply?.upvote?.length}}</small>
+              <button pButton pRipple type="button" icon="pi pi-thumbs-up" class="p-button-rounded"
+                (click)="upVoteReply(disc._id,reply._id)" [ngClass]="{'p-button-text':!hasUpVoted(reply)}"></button>
 
-      <ul>
-        <li *ngFor="let reply of disc.replies">
-          <article class="uk-comment  uk-comment-primary uk-visible-toggle">
-            <header class="uk-comment-header uk-position-relative">
-              <h4 class="uk-comment-title uk-margin-remove">{{reply?.teacherId?.teacherName}} </h4>
-              <h4 class="uk-comment-title uk-margin-remove">{{reply?.studentId?.studentName}} </h4>
-              <p class="uk-comment-meta uk-margin-remove-top">{{reply.time|date :'medium'}} </p>
-              <div class="uk-position-top-right uk-position-small uk-hidden-hover">
-                <a class="uk-link-muted" *ngIf="reply?.teaherId?._id == teacherId"
-                  (click)="deleteReply(disc,reply._id)">delete</a> &nbsp; &nbsp;
-                <a class="uk-link-muted" (click)="openReply(disc._id)">Reply</a>
-              </div>
-            </header>
-            <div class=" uk-comment-body">
-              <p>{{reply?.text}}</p>
-            </div>
-          </article>
-        </li>
-        <li>
-          <div id="{{disc._id}}">
-            <div *ngIf="replyId == disc?._id">
-              <div>
-                <textarea class="uk-textarea" rows="5" [(ngModel)]="newReply.text" name="comment"
-                  placeholder="leave a Comment"></textarea>
-              </div>
-              <div class="uk-text-right">
-                <button class="uk-button uk-button-primary" (click)="addReply(disc)">Comment</button>
-              </div>
+              <button pButton type="button" styleClass="p-button-sm" label="Reply" class="p-button-text"
+                (click)="openReply(disc._id)"></button>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+        <div class="media-right">
+          <button pButton pRipple type="button" icon="pi pi-trash" *ngIf="discTopic?.teacherId?._id == teacherId "
+            class="p-button-rounded p-button-danger p-button-text" (click)="deleteReply(disc,reply._id)"></button>
+        </div>
+      </article>
 
 
-
-
-    </li>
-  </ul>
-  <br>
-  <div>
-    <div class="uk-margin">
-      <textarea class="uk-textarea" rows="5" [(ngModel)]="newDiscussion.text" name="comment"
-        placeholder="leave a Comment"></textarea>
+      <article class="media" *ngIf="replyId == disc?._id">
+        <div class="media-content">
+          <div class="field">
+            <p class="control">
+              <textarea [rows]="2" pInputTextarea autoResize="autoResize" [(ngModel)]="newReply.text" name="comment"
+                placeholder="Add a comment..."></textarea>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control">
+              <button pButton type="button" label="Comment" (click)="addReply(disc)"></button>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <button pButton pRipple type="button" icon="pi pi-times-circle" class="p-button-rounded p-button-text"
+            (click)="reset()"></button>
+        </div>
+      </article>
     </div>
-    <button class="uk-button uk-button-primary" (click)="addDiscussion()" style="float: right;">Comment</button>
-  </div>
-</div>
-<br><br>
+    <div class="media-right">
+      <button pButton pRipple type="button" icon="pi pi-trash" *ngIf="disc?.teacherId?._id == teacherId "
+        class="p-button-rounded p-button-danger p-button-text"
+        (click)="deleteDiscussion(disc._id,disc?.imgUrl)"></button>
+    </div>
+  </article>
+
+
+  <article class="media" style="padding: 1rem;">
+    <div class="media-content">
+      <p-editor [(ngModel)]="newDiscussion.text" *ngIf="!imgToUpload">
+        <p-header>
+          <span class="ql-formats">
+            <button class="ql-bold" aria-label="Bold"></button>
+            <button class="ql-italic" aria-label="Italic"></button>
+            <button class="ql-underline" aria-label="Underline"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <select title="Text Alignment" class="ql-align">
+              <option selected>Gauche</option>
+              <option value="center" label="Center"></option>
+              <option value="right" label="Right"></option>
+              <option value="justify" label="Justify"></option>
+            </select>
+          </span>
+          <span class="ql-formats">
+            <button aria-label="Link" class="ql-link"></button>
+          </span>
+        </p-header>
+      </p-editor>
+
+      <p-fileUpload name="myfile[]" multiple="multiple" [showUploadButton]="false" [showCancelButton]="false"
+        chooseLabel="Select Image" chooseIcon="pi pi-image" (onSelect)="selectFile($event)" *ngIf="imgToUpload"
+        accept="image/*"></p-fileUpload>
+
+
+      <div class="field mt-3">
+        <p class="control has-text-right">
+          <button pButton pRipple type="button" *ngIf="!imgToUpload" class="p-button-text" (click)="imgToUpload = true"
+            icon="pi pi-image" pTooltip="Attach Image" tooltipPosition="top"></button> &nbsp;&nbsp;
+
+          <button pButton pRipple type="button" *ngIf="imgToUpload" class="p-button-text" (click)="imgToUpload = false"
+            icon="pi pi-align-left" pTooltip="Add Text" tooltipPosition="top"></button> &nbsp;&nbsp;
+
+          <button *ngIf="!loading" pButton type="button" label="Post comment" (click)="addDiscussion()"></button>
+          <button *ngIf="loading" pButton type="button" label="Post comment" icon="pi pi-spin pi-spinner"></button>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <br> <br>

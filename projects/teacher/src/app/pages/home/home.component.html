@@ -1,93 +1,28 @@
-<app-topnav></app-topnav>
-<br>
-<div class="uk-container">
-  <h2>Assinged Courses</h2>
-  <div uk-grid>
-    <!-- <div class="uk-width-1-4@m">
-      <a uk-toggle="target: #course-form" class="uk-display-block uk-card  uk-card-default uk-link-toggle ">
-        <div class="uk-card-media-top" style="text-align: center">
-          <img src="https://img.icons8.com/ultraviolet/80/000000/add-property.png" />
-        </div>
-        <div class="uk-card-body">
-          <h3 class="uk-card-title">Add new Course</h3>
+<app-topnav></app-topnav> <br>
+<div class="container is-fluid">
+  <div class="columns is-multiline">
+    <div class="column is-4" *ngFor="let course of allCourses">
+      <div [routerLink]="[ '/tr/course/notes']" [queryParams]="{courseId:course._id,subBlockId:course.blockId._id}"
+        class="card card-content ">
 
-        </div>
-      </a>
-    </div> -->
-    <div class="uk-width-1-3@m" *ngFor="let course of allCourses">
-      <a [routerLink]="[ '/tr/course/notes',{courseId:course._id,subBlockId:course.blockId._id}]"
-        class="uk-display-block uk-card  uk-card-default uk-link-toggle uk-box-shadow-small uk-box-shadow-hover-large">
-        <div class="uk-card-body">
-          <p class="uk-text-bolder">{{course.courseName}}</p>
-          <p>
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 172 172"
-              style=" fill:#000000;">
-              <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
-                stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
-                font-family="none" font-weight="none" font-size="none" text-anchor="none"
-                style="mix-blend-mode: normal">
-                <path d="M0,172v-172h172v172z" fill="none"></path>
-                <g fill="#333333">
-                  <path
-                    d="M37.625,26.875c-8.83935,0 -16.125,7.28565 -16.125,16.125v86c0,8.83935 7.28565,16.125 16.125,16.125h96.75c8.83935,0 16.125,-7.28565 16.125,-16.125v-86c0,-8.83935 -7.28565,-16.125 -16.125,-16.125zM37.625,37.625h96.75c3.04443,0 5.375,2.33057 5.375,5.375v86c0,3.04443 -2.33057,5.375 -5.375,5.375h-10.75v-10.75h-26.875v10.75h-59.125c-3.04443,0 -5.375,-2.33057 -5.375,-5.375v-86c0,-3.04443 2.33057,-5.375 5.375,-5.375zM86,59.125c-5.9419,0 -10.75,4.8081 -10.75,10.75c0,5.9419 4.8081,10.75 10.75,10.75c5.9419,0 10.75,-4.8081 10.75,-10.75c0,-5.9419 -4.8081,-10.75 -10.75,-10.75zM61.8125,69.875c-4.45117,0 -8.0625,3.61133 -8.0625,8.0625c0,4.45117 3.61133,8.0625 8.0625,8.0625c4.45117,0 8.0625,-3.61133 8.0625,-8.0625c0,-4.45117 -3.61133,-8.0625 -8.0625,-8.0625zM110.1875,69.875c-4.45117,0 -8.0625,3.61133 -8.0625,8.0625c0,4.45117 3.61133,8.0625 8.0625,8.0625c4.45117,0 8.0625,-3.61133 8.0625,-8.0625c0,-4.45117 -3.61133,-8.0625 -8.0625,-8.0625zM86,86c-8.31445,0 -14.0044,3.54834 -17.46875,6.55078c-1.80566,-0.67187 -3.82129,-1.17578 -6.21484,-1.17578c-9.09131,0 -13.94141,5.375 -13.94141,5.375v10.75h75.25v-10.75c0,0 -4.93408,-5.375 -12.93359,-5.375c-2.75049,0 -5.10205,0.48291 -7.05469,1.17578c-3.46435,-3.02344 -9.25928,-6.55078 -17.63672,-6.55078z">
-                  </path>
-                </g>
+        <p class="uk-text-bolder">{{course.courseName}}</p>
+        <p class="uk-text-left">
+
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 172 172"
+            style=" fill:#000000;">
+            <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+              stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+              font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+              <path d="M0,172v-172h172v172z" fill="none"></path>
+              <g fill="#333333">
+                <path
+                  d="M37.625,26.875c-8.83935,0 -16.125,7.28565 -16.125,16.125v86c0,8.83935 7.28565,16.125 16.125,16.125h96.75c8.83935,0 16.125,-7.28565 16.125,-16.125v-86c0,-8.83935 -7.28565,-16.125 -16.125,-16.125zM37.625,37.625h96.75c3.04443,0 5.375,2.33057 5.375,5.375v86c0,3.04443 -2.33057,5.375 -5.375,5.375h-10.75v-10.75h-26.875v10.75h-59.125c-3.04443,0 -5.375,-2.33057 -5.375,-5.375v-86c0,-3.04443 2.33057,-5.375 5.375,-5.375zM86,59.125c-5.9419,0 -10.75,4.8081 -10.75,10.75c0,5.9419 4.8081,10.75 10.75,10.75c5.9419,0 10.75,-4.8081 10.75,-10.75c0,-5.9419 -4.8081,-10.75 -10.75,-10.75zM61.8125,69.875c-4.45117,0 -8.0625,3.61133 -8.0625,8.0625c0,4.45117 3.61133,8.0625 8.0625,8.0625c4.45117,0 8.0625,-3.61133 8.0625,-8.0625c0,-4.45117 -3.61133,-8.0625 -8.0625,-8.0625zM110.1875,69.875c-4.45117,0 -8.0625,3.61133 -8.0625,8.0625c0,4.45117 3.61133,8.0625 8.0625,8.0625c4.45117,0 8.0625,-3.61133 8.0625,-8.0625c0,-4.45117 -3.61133,-8.0625 -8.0625,-8.0625zM86,86c-8.31445,0 -14.0044,3.54834 -17.46875,6.55078c-1.80566,-0.67187 -3.82129,-1.17578 -6.21484,-1.17578c-9.09131,0 -13.94141,5.375 -13.94141,5.375v10.75h75.25v-10.75c0,0 -4.93408,-5.375 -12.93359,-5.375c-2.75049,0 -5.10205,0.48291 -7.05469,1.17578c-3.46435,-3.02344 -9.25928,-6.55078 -17.63672,-6.55078z">
+                </path>
               </g>
-            </svg>
-
-            {{course.blockId.year}} year ({{course.blockId.blockName}}) sec.</p>
-        </div>
-      </a>
+            </g>
+          </svg>
+          {{course.blockId.year}} year ({{course.blockId.blockName}}) sec.</p>
+      </div>
     </div>
   </div>
-
 </div>
-
-<!-- 
-<div id="course-form" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    <button class="uk-modal-close-default" type="button" uk-close></button>
-    <form>
-      <fieldset class="uk-fieldset">
-
-        <legend class="uk-legend">Enter Course Detail</legend>
-
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Enter Course Id</label>
-          <input class="uk-input" type="text" [(ngModel)]="newCourse.courseId" name="id" placeholder="Course Id">
-        </div>
-
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Enter Course</label>
-          <input class="uk-input" type="text" [(ngModel)]="newCourse.courseName" name="cname" placeholder="Course Name">
-        </div>
-
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Select Department</label>
-          <select class="uk-select" id="form-stacked-select" name="dept" [(ngModel)]="newCourse.department">
-            <option *ngFor="let department of departments" value="{{department.departmentId}}">
-              {{department.departmentName}}</option>
-          </select>
-        </div>
-
-        <div class="uk-margin">
-          <div class="uk-form-controls">
-            <label class="uk-form-label" for="form-stacked-select">Select Batch</label>
-            <select class="uk-select" [(ngModel)]="newCourse.batch" name="batch" id="form-stacked-select">
-              <option value="1">First Year</option>
-              <option value="2">Second Year</option>
-            </select>
-          </div>
-        </div>
-
-
-        <div class="uk-margin">
-          <button class="uk-button uk-button-secondary" (click)="addCourse()">
-            Add Course
-          </button>
-        </div>
-      </fieldset>
-    </form>
-
-  </div>
-</div> -->

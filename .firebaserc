@@ -7,5 +7,8 @@
         ]
       }
     }
+  },
+  "projects": {
+    "default": "onlinecourse-d3ce5"
   }
 }

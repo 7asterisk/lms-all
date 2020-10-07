@@ -1,10 +1,10 @@
 <br>
-<div *ngIf="!submited" class="uk-container ">
+<div *ngIf="!submited" class="container is-fluid ">
 
-  <div uk-grid>
-    <div class="uk-width-1-4">
-      <div uk-grid>
-        <div class="uk-width-2-3">
+  <div class="columns">
+    <div class="column is-3 is-offset-1 ">
+      <div>
+        <div>
           <div class="timer">
             {{min}}:{{sec}}
           </div>
@@ -13,12 +13,13 @@
       <br>
       <br>
       <div class="qus-nav">
-        <div class="uk-grid-column-small uk-grid-row-large uk-child-width-1-3@s uk-text-center" uk-grid>
-          <div *ngFor="let qus of questions; let i = index">
-            <a class="uk-display-block uk-card uk-card-default uk-card-body" (click)="selectQus(i)"
-              [ngClass]="{'uk-card-primary': anss[ansIndex(qus._id)]?.givenAns.length !=0}">
+        <div class="columns is-multiline is-mobile">
+          <div class="column is-3" *ngFor="let qus of questions; let i = index">
+            <button pButton type="button" label="{{i+1}}" (click)="selectQus(i)"
+              [ngClass]="{'p-button-secondary': anss[ansIndex(qus._id)]?.givenAns.length !=0}">
               <span class="badge" *ngIf="flags[i]===1"></span>
-              {{i+1}}</a>
+            </button>
+
           </div>
         </div>
       </div>
@@ -26,62 +27,55 @@
     </div>
 
 
-    <div class="uk-width-3-4">
+    <div class="column is-7">
 
       <div style="float: right;">
-        <button class="uk-button  uk-button-danger" style="background-color:#2a3f54;" (click)="submitData()">
-          &nbsp;&nbsp;
-          Submit
-          &nbsp;&nbsp;</button>
+        <button pButton type="button" label="Submit" style="background-color:#2a3f54;" (click)="submitData()">
+        </button>
       </div>
 
 
       <div class="qus-sheet">
-        <div uk-grid>
-          <div class="uk-width-5-6">
+        <div class="columns is-mobile">
+          <div class="column is-9">
             <p><b> {{index+1}})</b> {{que?.que}}</p>
           </div>
-          <div class="uk-width-expand uk-text-right">
-            <B>
+          <div class="column is-3 ">
+            <span class="has-text-weight-semibold">
               {{que?.assingedMarks}} Marks
-            </B>
-            <div>
-              <button style="padding: 0 20px;" class="uk-button uk-button-default" *ngIf="flags[index]!==1"
-                uk-tooltip="title: add flag; pos: right " (click)="setFlag()">
-                <span>🚩</span>
-              </button>
-              <button style="padding: 0 20px;" class="uk-button uk-button-default" *ngIf="flags[index] ===1"
-                uk-tooltip="title: remove flag; pos: right" (click)="setFlag()">
-                <span>🚫</span>
-              </button>
-            </div>
+            </span>
+            <button pButton pRipple type="button" label="🚩" style="padding:0" class="p-button-help p-button-text"
+              *ngIf="flags[index]!==1" (click)="setFlag()">
+            </button>
+            <button pButton pRipple type="button" label="🚫" style="padding:0" class="p-button-help p-button-text"
+              *ngIf="flags[index] ===1" (click)="setFlag()">
+            </button>
           </div>
         </div>
-        <br>
 
-        <div>
+        <div *ngIf="que">
 
-          <div *ngIf="que.ops.length != 0">
-            <div style="display: flex; align-items: center;" *ngFor="let op of que.ops ; let i = index">
-              <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span>
-              <a *ngIf="que.queType !=='2'"
-                [ngClass]="{'uk-card-primary': anss[ansIndex(que._id)]?.givenAns[0] === op.op}"
-                (click)="addAns(que._id,op.op)"
-                class="uk-display-block uk-box-shadow-small options uk-card uk-card-body uk-card-small uk-link-toggle uk-width-large">
-                <p>{{op.op}}</p>
-              </a>
-              <a [ngClass]="{'uk-card-primary':anss[ansIndex(que._id)].givenAns.indexOf(op.op) > -1}"
-                (click)="addMultiAns(que._id,op.op)" *ngIf="que.queType ==='2'"
-                class="uk-display-block uk-box-shadow-small options uk-card uk-card-body uk-card-small uk-link-toggle uk-width-large">
-                <p>{{op.op}}</p>
-              </a>
+          <div *ngIf="que?.ops?.length != 0">
+            <div *ngFor="let op of que.ops ; let i = index">
+
+              <div class="p-field-radiobutton" *ngIf="que.queType !=='2'">
+                <span class="">{{i+1}} &nbsp;&nbsp; </span>
+                <p-radioButton name="answer" value="{{op.op}}" inputId="{{i}}"
+                  [(ngModel)]="anss[ansIndex(que._id)].givenAns[0]"></p-radioButton>
+                <label for="{{i}}"> &nbsp; &nbsp; {{op.op}}</label>
+              </div>
+
+              <div class="p-field-radiobutton" *ngIf="que.queType ==='2'">
+                <span class="">{{i+1}} &nbsp;&nbsp; </span>
+                <p-checkbox name="group1" value="{{op.op}}" [(ngModel)]="anss[ansIndex(que._id)].givenAns"
+                  inputId="{{i}}"></p-checkbox>
+                <label for="{{i}}">&nbsp; &nbsp; {{op.op}}</label>
+              </div>
             </div>
           </div>
-          <div *ngIf="que.ops.length == 0">
-            <div class="uk-margin">
-              <textarea class="uk-textarea" rows="5" placeholder="Answer"
-                [(ngModel)]="anss[ansIndex(que._id)].givenAns[0]"></textarea>
-            </div>
+          <div *ngIf="que?.ops?.length == 0">
+            <textarea pInputTextarea [(ngModel)]="anss[ansIndex(que._id)].givenAns[0]" [rows]="7"
+              placeholder="your answer.."></textarea>
           </div>
         </div>
 
@@ -91,21 +85,13 @@
 
       <div style="float: right;">
         <div class="uk-button-group">
-          <button class="uk-button  uk-button-secondary" *ngIf="index==0" disabled>Previous</button>
-          <div *ngIf="index > 0">
-            <button class="uk-button  uk-button-secondary" (click)="previousQue()">Previous</button>
+          <button pButton type="button" label="Previous" *ngIf="index==0" disabled></button>
 
-          </div>
-          <div *ngIf="index < questions.length-1 ">
-            <button class="uk-button   uk-button-secondary" (click)="nextQue()"> &nbsp;&nbsp;
-              Next
-              &nbsp;&nbsp;</button>
+          <button pButton type="button" label="Previous" (click)="previousQue()" *ngIf="index > 0"></button>
+          &nbsp; &nbsp;
+          <button pButton type="button" label="Next" (click)="nextQue()" *ngIf="index < questions?.length-1 "></button>
 
-          </div>
-
-          <button class="uk-button  uk-button-success" *ngIf="index == questions.length-1 " disabled> &nbsp;&nbsp;
-            Next
-            &nbsp;&nbsp;</button>
+          <button pButton type="button" label="Next" *ngIf="index == questions?.length-1 " disabled> </button>
 
         </div>
 

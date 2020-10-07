@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-declare var UIkit: any;
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { DataService } from '../../data.service';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-notes',
   templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.scss']
+  styleUrls: ['./notes.component.scss'],
+  providers: [ConfirmationService]
 })
 export class NotesComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private dataService: DataService, private storage: AngularFireStorage) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private storage: AngularFireStorage,
+    private confirmationService: ConfirmationService) { }
 
 
   createNewFolder = false;
@@ -20,7 +22,7 @@ export class NotesComponent implements OnInit {
   allFolder;
   renameId = '';
   openFolder = 0;
-
+  openFolderOption;
   courseId;
   blockId;
   allNotes;
@@ -28,9 +30,10 @@ export class NotesComponent implements OnInit {
   fileName;
   fileType;
   uploadPercent;
+  toUploadNote;
   idToUpdate;
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.courseId = params.courseId;
       this.blockId = params.subBlockId;
       this.newFolder.courseId = params.courseId;
@@ -46,7 +49,7 @@ export class NotesComponent implements OnInit {
   uploadFile(event, folder) {
     // console.log(event);
 
-    const file = event.target.files[0];
+    const file = event.files[0];
 
     const name = file.name;
     this.fileName = file.name;
@@ -66,19 +69,24 @@ export class NotesComponent implements OnInit {
         this.newNote.noteUrl = url;
         folder.notes.push(this.newNote);
         this.updateNote(folder);
+        this.toUploadNote = null;
       }))
     )
       .subscribe();
   }
 
   deleteNote(folder, noteIndex) {
-    UIkit.modal.confirm('Delete Selected File Permanently').then(() => {
 
-      this.storage.storage.refFromURL(folder.notes[noteIndex].noteUrl).delete().then(() => {
-        folder.notes.splice(noteIndex, 1);
-        this.updateNote(folder);
-      });
+    this.confirmationService.confirm({
+      message: 'Delete Selected File Permanently?',
+      accept: () => {
+        this.storage.storage.refFromURL(folder.notes[noteIndex].noteUrl).delete().then(() => {
+          folder.notes.splice(noteIndex, 1);
+          this.updateNote(folder);
+        });
+      }
     });
+
   }
 
 
@@ -98,17 +106,7 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  editNote(note) {
 
-    // this.newNote.blockId = note.blockId;
-    // this.newNote.courseId = note.courseId;
-    // this.newNote.noteDesc = note.noteDesc;
-    // this.newNote.noteUrl = note.noteUrl;
-    // this.newNote.noteTitle = note.noteTitle;
-    // this.idToUpdate = note._id;
-    // console.log(note);
-
-  }
 
   getNotes() {
     this.dataService.getFilterData({ to: 'notes', filter: { courseId: this.courseId, blockId: this.blockId }, projection: {} }
@@ -125,16 +123,20 @@ export class NotesComponent implements OnInit {
   }
 
   deleteFolder(id, folder) {
-    UIkit.modal.confirm('Delete Selected Folder Permanently').then(() => {
-      folder.notes.forEach(element => {
-        this.storage.storage.refFromURL(element.noteUrl).delete().then(() => {
-        });
-      });
-      this.dataService.deleteItem('notes/' + id).subscribe(() => {
-        this.getNotes();
-      });
 
-    });
+
+    this.confirmationService.confirm({
+      message: 'Delete Selected Folder Permanently?',
+      accept: () => {
+        folder.notes.forEach(element => {
+          this.storage.storage.refFromURL(element.noteUrl).delete().then(() => {
+          });
+        });
+        this.dataService.deleteItem('notes/' + id).subscribe(() => {
+          this.getNotes();
+        });
+      }
+    })
   }
 
   updateNote(folder) {

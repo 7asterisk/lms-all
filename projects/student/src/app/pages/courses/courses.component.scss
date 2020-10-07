@@ -13,7 +13,7 @@
   // border-right: 1px solid rgba(0, 0, 0, .12);
 }
 
-.sidenav-link>li {
+.sidenav-link li {
   padding: 15px 30px;
   font-weight: 500;
 }
@@ -56,4 +56,32 @@
   transform: translate(50%, -50%);
   white-space: nowrap;
   margin-left: -10px;
+}
+
+
+:host ::ng-deep .p-menuitem-link-active {
+  background: #683ab762;
+}
+
+:host ::ng-deep .p-menuitem-link-active:not(.p-disabled):hover {
+  background: #683ab762;
+}
+
+:host ::ng-deep .p-menu {
+  border: none;
+  width: auto;
+}
+
+
+:host ::ng-deep .p-menu .p-menuitem-link .p-menuitem-icon {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link {
+  padding: 1rem 0.75rem;
+}
+
+:host ::ng-deep .mat-drawer-content {
+  overflow: inherit;
 }

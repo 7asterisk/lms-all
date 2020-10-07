@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../data.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { NgProgressComponent } from 'ngx-progressbar';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,14 @@ export class HomeComponent implements OnInit {
   allCourses;
   studentId;
   newCourse = { courseId: '', courseName: '', department: '', batch: '' };
+
+
+  @ViewChild(NgProgressComponent) progressBar: NgProgressComponent;
+
+  ngAfterViewInit() {
+    this.progressBar.start();
+  }
+
   constructor(private dataService: DataService, private authService: AuthService) {
     this.studentId = this.authService.getUserId();
     this.dataService.getItem('student/' + this.studentId).subscribe(data => {
@@ -33,6 +42,7 @@ export class HomeComponent implements OnInit {
     }).subscribe(data => {
       // console.log(data);
       this.allCourses = data;
+      this.progressBar.complete();
     });
   }
   ngOnInit(): void {

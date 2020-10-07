@@ -24,7 +24,7 @@ export class AnnouncementComponent implements OnInit {
   studentId;
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.studentId = this.authService.getUserId();
       this.dataService.getItem('student/' + this.studentId).subscribe(data => {
         this.blockId = data['blockId'];

@@ -14,6 +14,7 @@ import { AuthGuard } from 'src/app/auth/auth.guard';
 import { DescTopicComponent } from './pages/discussion/desc-topic/desc-topic.component';
 import { AnnouncementComponent } from './pages/announcement/announcement.component';
 import { CalenderComponent } from './pages/calender/calender.component';
+import { PolesComponent } from './pages/poles/poles.component';
 
 
 const routes: Routes = [
@@ -29,12 +30,13 @@ const routes: Routes = [
       { path: 'about-course', component: AboutCourseComponent },
       { path: 'quiz-submmision', component: QuizSubmissionComponent },
       { path: 'grade', component: GradeComponent },
+      { path: 'polls', component: PolesComponent, }
     ], canActivate: [AuthGuard]
   },
   { path: 'st/announcement', component: AnnouncementComponent, canActivate: [AuthGuard] },
   { path: 'st/calender', component: CalenderComponent, canActivate: [AuthGuard] },
   { path: 'st/home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'st/quiz-detail', component: QuizDetailComponent, canActivate: [AuthGuard] }
+  { path: 'st/quiz-detail', component: QuizDetailComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

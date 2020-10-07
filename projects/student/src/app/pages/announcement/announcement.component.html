@@ -1,18 +1,14 @@
 <app-topnav></app-topnav>
-<div class="uk-container">
-  <div uk-grid>
-    <div class="uk-width-1-1@m">
-      <table class="uk-table">
-        <tbody>
-          <tr *ngFor="let announc of allAnnouncement">
-            <td>
-              <h4 class="uk-margin-remove">{{announc.title}}</h4>
-              <span> {{announc.teacherId.teacherName}}</span> <br>
-              <span>{{announc.time | date }} </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<div class="container is-fluid">
+  <br>
+  <div class="columns is-multiline">
+    <div class="column is-12" *ngFor="let announc of allAnnouncement;let i=index">
+      <p-panel header="{{announc.title}}">
+        <small class="has-text-weight-semibold">{{announc.teacherId.teacherName}}</small> &nbsp;
+        <small>{{announc.time|date:'d/M/yy, h:mm a'}}</small>
+        <p>{{announc.text}}</p>
+        <a href="{{announc?.attache?.fileUrl}}">{{announc?.attache?.fileName}}</a>
+      </p-panel>
     </div>
   </div>
 </div>

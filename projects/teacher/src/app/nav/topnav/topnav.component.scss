@@ -1,29 +1,15 @@
-.uk-navbar-container:not(.uk-navbar-transparent) {
-  background-color: rgba(255, 255, 255, 0.97);
-  // box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+a.navbar-item:hover {
+  background-color: #fff;
+  color: #3273dc;
 }
 
-.uk-navbar-nav>li>a {
-  min-height: 70px;
+.navbar-item img {
+  max-height: 2.75rem;
+  padding-left: 13px;
 }
 
-.uk-logo {
-  font-family: 'Pacifico', cursive;
-}
 
-nav {
-  color: #333;
-  font-size: 1.125em;
-  font-family: 'Open Sans', sans-serif;
-  line-height: 1.8;
-  box-sizing: border-box;
-  clear: both;
-  outline: 0;
-  border-width: 0;
-  border-style: solid;
-  border-color: transparent;
-  background: transparent;
-  outline-style: solid;
-  vertical-align: baseline;
-  transform: none !important;
+.dropdown-menu {
+  right: 0;
+  left: auto;
 }

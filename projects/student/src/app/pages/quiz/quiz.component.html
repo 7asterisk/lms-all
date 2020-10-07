@@ -1,100 +1,78 @@
 <br>
-<div class="uk-container">
+<div class="container  is-fluid">
 
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>quiz</span></li>
-  </ul>
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>quiz</li>
+    </ul>
+  </nav>
 
-  <ul uk-tab style="margin-bottom:0;">
-    <li><a href="#">Active</a></li>
-    <li><a href="#">InActive</a></li>
-  </ul>
+  <p-tabView>
+    <p-tabPanel header="Active">
 
-  <ul class="uk-switcher">
-    <li>
-      <table class="uk-table">
-        <thead>
-          <tr style="box-shadow: none;">
-            <th>Title</th>
-            <th>Deadline</th>
-            <th>Questions</th>
-            <th>Marks</th>
-            <th>Time</th>
-            <th>Attepte</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="quiz-row" *ngFor="let quiz of activeQuiz">
-            <td>{{quiz.quizTitle  }}</td>
-            <td>{{quiz.deadLine | date}}</td>
-            <td>{{quiz.noOfQue}}</td>
-            <td>{{quiz.outOf}}</td>
-            <td>{{quiz.qTime}} min.</td>
-            <td>
+      <div class="columns is-multiline">
+        <div class="column is-4" *ngFor="let quiz of activeQuiz">
+          <p-panel header="{{quiz.quizTitle }}">
+            <p>Deadline: {{quiz.deadLine | date:'d/M/yy, h:mm a'}}</p>
+            <p>Marks: {{quiz.outOf}}</p>
+            <p>No. of Questions: {{quiz.noOfQue}}</p>
+            <p>quiz Duration: {{quiz.qTime}} min.</p>
+            <p>Attepte:
               <span *ngIf="quiz.submission?.length!= 0">{{quiz.submission[0]?.attempted}}/{{quiz.noOfAttempt}}
               </span>
               <span *ngIf="quiz.submission?.length==0">0/{{quiz.noOfAttempt}}
               </span>
-            </td>
-            <td style="text-align: center;">
-              <button class="uk-button uk-button-primary uk-button-small" *ngIf="canStart(quiz)" type="button"
-                tabindex="-1" (click)="startQuiz(quiz._id,quiz.quizTitle)" href="#modal-sections" uk-toggle>
-                Start Quiz
+            </p>
+            <hr>
+            <p class="has-text-right">
+              <button pButton label=" Start Quiz" *ngIf="canStart(quiz)" type="button"
+                (click)="startQuiz(quiz._id,quiz.quizTitle)">
               </button>
-              <button class="uk-button uk-button-primary uk-button-small"
-                *ngIf="quiz.submission.length===1 && (quiz.deadLine<today)" type="button" tabindex="-1"
-                [routerLink]="[ '/st/quiz-submmision', {quiz:quiz._id} ]">
-                view Answer
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </li>
-    <li>
+            </p>
+          </p-panel>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="InActive">
 
-      <table class="uk-table">
-        <thead>
-          <tr style="box-shadow: none;">
-            <th>Title</th>
-            <th>activate On</th>
-            <th>Deadline</th>
-            <th>No. of Ques.</th>
-            <th>Marks</th>
-            <th>Time</th>
-            <th>status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="quiz-row" *ngFor="let quiz of inActiveQuiz">
-            <td>{{quiz.quizTitle  }}</td>
-            <td>{{quiz.activateTime | date}}</td>
-            <td>{{quiz.deadLine | date}}</td>
-            <td>{{quiz.noOfQue}}</td>
-            <td><span *ngIf="!quiz.submission[0]?.marks"> - /</span>
-              <span *ngIf="quiz.submission[0]?.marks">{{quiz.submission[0]?.marks}} /</span> {{quiz.outOf}}</td>
-            <td>{{quiz.qTime}} min.</td>
-            <td>
-              <span *ngIf="quiz.submission[0]?.marks"> Checked </span>
-              <span *ngIf="!quiz.submission[0]?.marks && quiz.submission.length !== 0 ">Not Checked
+      <div class="columns is-multiline">
+        <div class="column is-4" *ngFor="let quiz of inActiveQuiz">
+          <p-panel header="{{quiz.quizTitle }}">
+            <p>Deadline: {{quiz.deadLine | date:'d/M/yy, h:mm a'}}</p>
+            <p>No. of Questions: {{quiz.noOfQue}}</p>
+            <p>quiz Duration: {{quiz.qTime}} min.</p>
+            <p>Attepte:
+              <span *ngIf="quiz.submission?.length!= 0">{{quiz.submission[0]?.attempted}}/{{quiz.noOfAttempt}}
               </span>
-              <span *ngIf="quiz.submission.length===0 && !quiz.submission[0]?.marks">Not Atempted</span>
-            </td>
-            <td style="text-align: center;">
-              <button class="uk-button uk-button-primary uk-button-small"
-                *ngIf="quiz.submission.length===1 && (quiz.deadLine<today) && quiz.submission[0]?.marks" type="button"
-                tabindex="-1"
-                [routerLink]="[ '/st/course/quiz-submmision', {courseId:courseId,subBlockId:subBlockId,quiz:quiz._id} ]">
-                view Answer
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </li>
-  </ul>
+              <span *ngIf="quiz.submission?.length==0">0/{{quiz.noOfAttempt}}
+              </span>
+            </p>
+
+            <hr>
+            <div class="columns is-mobile">
+              <div class="column is-6">
+                <span class="tag is-success" *ngIf="quiz.submission[0]?.marks"> Checked </span>
+                <span class="tag is-info" *ngIf="!quiz.submission[0]?.marks && quiz.submission.length !== 0 ">Not
+                  Checked
+                </span>
+                <span class="tag is-danger" *ngIf="quiz.submission.length===0 && !quiz.submission[0]?.marks">Not
+                  Atempted</span>
+              </div>
+              <div class=" column is-6 has-text-right">
+                <button pButton label="view Answer"
+                  *ngIf="quiz.submission.length===1 && (quiz.deadLine<today) && quiz.submission[0]?.marks" type="button"
+                  tabindex="-1"
+                  [routerLink]="[ '/st/course/quiz-submmision', {courseId:courseId,subBlockId:subBlockId,quiz:quiz._id} ]">
+                </button>
+              </div>
+            </div>
+
+          </p-panel>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
 
 
 
@@ -102,21 +80,13 @@
 <br>
 
 
-<div id="modal-sections" uk-modal>
-  <div class="uk-modal-dialog">
-    <button class="uk-modal-close-default" type="button" uk-close></button>
-    <div class="uk-modal-header">
-      <h2 class="uk-modal-title">{{quizTitle}}</h2>
-    </div>
-    <div class="uk-modal-body">
-      <B>Before you begin</B>
-      <p>make sure you have a stable internet connection & you’re finished before exiting.</p>
-    </div>
-    <div class="uk-modal-footer uk-text-right">
-      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-      <button class="uk-button uk-button-primary" type="button"
-        [routerLink]="[ '/st/quiz-detail', {courseId:courseId,subBlockId:subBlockId,quiz:quizId} ]"
-        href="#modal-sections" uk-toggle>Start</button>
-    </div>
-  </div>
-</div>
+
+
+<p-dialog header="quizTitle" [(visible)]="beforStartPanal" [modal]="true" styleClass="mydialog">
+  <B>Before you begin</B>
+  <p>make sure you have a stable internet connection & you’re finished before exiting.</p>
+  <p-footer>
+    <button pButton label="Start" type="button"
+      [routerLink]="[ '/st/quiz-detail', {courseId:courseId,subBlockId:subBlockId,quiz:quizId} ]"></button>
+  </p-footer>
+</p-dialog>

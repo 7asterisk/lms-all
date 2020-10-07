@@ -28,7 +28,7 @@ export class GradeComponent implements OnInit {
     this.today = now.toISOString();
 
     this.studentId = this.auth.getUserId();
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.blockId = params.subBlockId;
       this.courseId = params.courseId;
       this.getAssingment();
@@ -52,7 +52,7 @@ export class GradeComponent implements OnInit {
       this.assingments = [];
       this.allAssingment = data;
       this.allAssingment.forEach(element => {
-        if (element.submission[0].marks) {
+        if (element.submission[0]?.marks) {
           this.assingments.push(element);
         }
       });

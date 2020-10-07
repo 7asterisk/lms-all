@@ -12,8 +12,8 @@ export class DataService {
 
   }
 
-  apiUrl = 'http://localhost:5000';
-  // apiUrl = 'https://coursebackend.herokuapp.com';
+  // apiUrl = 'http://localhost:5000';
+  apiUrl = 'https://coursebackend.herokuapp.com';
   addItem(to, data) {
     return this.http.post(`${this.apiUrl}/${to}`, data, { headers: this.headers });
   }

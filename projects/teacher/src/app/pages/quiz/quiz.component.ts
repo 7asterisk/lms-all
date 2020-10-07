@@ -23,7 +23,7 @@ export class QuizComponent implements OnInit {
   ngOnInit(): void {
     const now = new Date;
     this.today = now.toISOString();
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.subBlockId = params.subBlockId;
       this.courseId = params.courseId;
       this.newQuiz.courseId = this.courseId;

@@ -15,20 +15,24 @@ export class AnnouncementComponent implements OnInit {
   fileName: any;
   fileType: any;
   uploadPercent: any;
-
+  newAnnoModel = false;
   constructor(private route: ActivatedRoute, private dataService: DataService, private storage: AngularFireStorage) { }
 
 
   createNewFolder = false;
-  newAnnouncement = { title: '', text: '', time: Date.now(), teacherId: '', courseId: '', blockId: '', fileUrl: [] };
+  newAnnouncement = {
+    title: '', text: '', time: Date.now(), teacherId: '', courseId: '', blockId: '',
+    attache: null
+  };
   updateId = '';
   courseId;
   blockId;
   allAnnouncement;
   courseName;
+  attache = { fileName: '', fileUrl: '' }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.courseId = params.courseId;
       this.blockId = params.subBlockId;
       this.newAnnouncement.courseId = params.courseId;
@@ -47,7 +51,7 @@ export class AnnouncementComponent implements OnInit {
       this.newAnnouncement.time = Date.now();
       this.dataService.addItem('announcement', this.newAnnouncement).subscribe(data => {
         console.log(data);
-        UIkit.modal('#add-announcemnet').hide();
+        this.newAnnoModel = false;
         this.getAnnouncement();
       });
     }
@@ -58,12 +62,12 @@ export class AnnouncementComponent implements OnInit {
   uploadFile(event) {
     // console.log(event);
 
-    const file = event.target.files[0];
+    const file = event.files[0];
 
-    const name = file.name;
     this.fileName = file.name;
-    // console.log(this.fileType);
+    console.log(this.fileName);
 
+    this.attache.fileName = this.fileName;
     const filePath = `${this.blockId}/${this.courseId}/announcement/${this.fileName}`;
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, file);
@@ -71,22 +75,26 @@ export class AnnouncementComponent implements OnInit {
     // get notified when the download URL is available
     task.snapshotChanges().pipe(
       finalize(() => fileRef.getDownloadURL().subscribe(url => {
-        this.newAnnouncement.fileUrl.push(url);
+        this.attache.fileName = this.fileName;
+        this.attache.fileUrl = url;
+        this.newAnnouncement.attache = this.attache;
       }))
     )
       .subscribe();
   }
 
   deleteRefrence() {
-    this.storage.storage.refFromURL(this.newAnnouncement.fileUrl[0]).delete().then(() => {
-      this.newAnnouncement.fileUrl = [];
-      this.fileName = '';
+    this.storage.storage.refFromURL(this.newAnnouncement.attache.fileUrl).delete().then(() => {
+      this.newAnnouncement.attache.fileName = '';
+      this.newAnnouncement.attache.fileUrl = '';
     });
   }
 
   editAnnouncement(announc) {
+    this.newAnnoModel = true;
     this.newAnnouncement.text = announc.text;
     this.newAnnouncement.title = announc.title;
+    this.newAnnouncement.attache = announc.attache;
     this.updateId = announc._id;
   }
 
@@ -114,7 +122,7 @@ export class AnnouncementComponent implements OnInit {
   updateAnnouncement() {
     this.dataService.updateItem('announcement/' + this.updateId, this.newAnnouncement).subscribe(() => {
       this.getAnnouncement();
-      UIkit.modal('#add-announcemnet').hide();
+      this.newAnnoModel = false;
       this.reset();
     });
   }
@@ -137,5 +145,7 @@ export class AnnouncementComponent implements OnInit {
     this.updateId = '';
     this.newAnnouncement.title = '';
     this.newAnnouncement.text = '';
+    this.newAnnouncement.attache.fileUrl = '';
+    this.newAnnouncement.attache.fileUrl = '';
   }
 }

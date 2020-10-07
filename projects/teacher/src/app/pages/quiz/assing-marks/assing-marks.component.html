@@ -1,33 +1,29 @@
 <br>
-<div class="uk-container uk-container-xsmall">
-  <div uk-grid>
-    <div class="uk-width-3-5@m">
+<div class="container is-fluid">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Quiz</li>
+      <li>{{quizTitle}}</li>
+      <li>{{studentName}}</li>
+    </ul>
+  </nav>
 
-      <ul class="uk-breadcrumb">
-        <li><a>{{courseName}}</a></li>
-        <li><span>Quiz</span></li>
-        <li><span>{{quizTitle}}</span></li>
-        <li><span>{{studentName}}</span></li>
-      </ul>
+  <button pButton pRipple type="button" label="Conform Submission" style="float: right;"
+    (click)="updateMarks()"></button>
 
-    </div>
-    <div class="uk-width-2-5@m">
-      <button style="float: right;" (click)="updateMarks()" class="uk-button uk-button-primary ">Conform
-        Submission</button>
-    </div>
-  </div>
+  <br> <br>
   <div class="qus-sheet" *ngFor="let que of questions;let j=index">
-    <div uk-grid>
-      <div class="uk-width-4-5">
+    <div class="columns ">
+      <div class="column is-10">
         <p><b> {{j+1}})</b> {{que.que}}</p>
       </div>
-      <div class="uk-width-expand">
+      <div class="column is-2">
         <B *ngIf="!(que.queType==3)">
           {{anss[j].givenMarks}}/{{que.assingedMarks}}
         </B>
         <div *ngIf="(que.queType==3)">
-          <input class="uk-input uk-form-width-xsmall" [(ngModel)]="anss[j].givenMarks" style="width: 60px;"
-            type="number">
+          <input class="input" [(ngModel)]="anss[j].givenMarks" style="width: 60px;" type="number">
           <b>
             /{{que.assingedMarks}}</b>
         </div>
@@ -35,20 +31,19 @@
     </div>
     <br>
     <div>
-
       <div *ngIf="que.ops.length != 0">
-        <div style="display: flex; align-items: center;" *ngFor="let op of que.ops ; let i = index">
-          <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span>
-          <a *ngIf="que.queType !=='2'"
-            [ngClass]="{'uk-card-danger': anss[j]?.givenAns[0] === op.op,'uk-card-primary':que.anss[0] === op.op,'uk-card-secondry':anss[j]?.givenAns[0] === op.op && que.anss[0] === op.op}"
-            class="uk-display-block uk-box-shadow-small options uk-card uk-card-body uk-card-small uk-link-toggle uk-width-large">
-            <p>{{op.op}}</p>
-          </a>
-          <a [ngClass]="{'uk-card-danger':anss[j].givenAns.indexOf(op.op) > -1,'uk-card-primary':que.anss.indexOf(op.op)>-1,'uk-card-secondry':anss[j].givenAns.indexOf(op.op) > -1 && que.anss.indexOf(op.op)>-1 }"
-            *ngIf="que.queType ==='2'"
-            class="uk-display-block uk-box-shadow-small options uk-card uk-card-body uk-card-small uk-link-toggle uk-width-large">
-            <p>{{op.op}}</p>
-          </a>
+        <div *ngFor="let op of que.ops ; let i = index">
+          <div *ngIf="que.queType !=='2'" class="card"
+            [ngClass]="{'uk-card-danger': anss[j]?.givenAns[0] === op.op,'uk-card-primary':que.anss[0] === op.op,'uk-card-secondry':anss[j]?.givenAns[0] === op.op && que.anss[0] === op.op}">
+            <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span> &nbsp;&nbsp;
+            <span>{{op.op}}</span>
+          </div>
+          <div class="card"
+            [ngClass]="{'uk-card-danger':anss[j].givenAns.indexOf(op.op) > -1,'uk-card-primary':que.anss.indexOf(op.op)>-1,'uk-card-secondry':anss[j].givenAns.indexOf(op.op) > -1 && que.anss.indexOf(op.op)>-1 }"
+            *ngIf="que.queType ==='2'">
+            <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span> &nbsp;&nbsp;
+            <span>{{op.op}}</span>
+          </div>
         </div>
       </div>
       <div *ngIf="que.ops.length == 0">

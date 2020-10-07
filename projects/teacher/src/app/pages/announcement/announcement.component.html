@@ -1,115 +1,69 @@
 <br>
-<div class="uk-container">
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>Announcemnet</span></li>
-  </ul>
+<div class="container is-fluid">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Announcement Forums</li>
+    </ul>
+  </nav>
 
-  <div class="uk-card uk-card-default uk-card-body">
-    <button class="uk-button" href="#add-announcemnet" uk-toggle>
-      Make Announcemnet</button>
 
+
+  <div class="card card-content ">
+    <button pButton type="button" (click)="newAnnoModel=true;reset()" label="Make Announcemnet"></button>
   </div>
+  <br>
 
-  <div uk-grid>
-    <div class="uk-width-1-1@m">
-      <table class="uk-table">
-        <tbody>
-          <tr *ngFor="let announc of allAnnouncement">
-            <td>
-              <h4>{{announc.title}}</h4>
-              <p>{{announc.text}}</p>
-            </td>
-            <td>
-              <div class="uk-inline">
-                <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
-                <div uk-dropdown="mode: click">
-                  <ul class="uk-list">
-                    <li>
-                      <a (click)="editAnnouncement(announc)" href="#add-announcemnet" uk-toggle>
-                        <span uk-icon="pencil"></span> &nbsp;&nbsp; Edit
-                      </a>
-                    </li>
-                    <li>
-                      <a (click)="deleteAnnouncement(announc._id)">
-                        <span uk-icon="trash"></span> &nbsp;&nbsp;
-                        Delete
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="columns">
+    <div class="column is-6" *ngFor="let announc of allAnnouncement;let i=index">
+      <p-panel header="{{announc.title}}">
+        <ng-template pTemplate="icons">
+          <button pButton class="p-panel-header-icon p-link" icon="pi pi-pencil"
+            (click)="editAnnouncement(announc)"></button>
+          <button pButton class="p-panel-header-icon p-link" icon="pi pi-trash"
+            (click)="deleteAnnouncement(announc._id)"></button>
+        </ng-template>
+        <small> {{announc.time|date:'d/M/yy, h:mm a'}}</small>
+        <p>{{announc.text}}</p>
+        <a href="{{announc?.attache?.fileUrl}}">{{announc?.attache?.fileName}}</a>
+      </p-panel>
     </div>
-
   </div>
+
+
+
 </div>
 <br>
 
-
-<div id="add-announcemnet" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    <button class="uk-modal-close-default" (click)="reset()" type="button" uk-close></button>
-    <form>
-      <fieldset class="uk-fieldset">
-
-        <legend class="uk-legend">Make Announcemnet</legend>
+<p-dialog header="Make Announcemnet " [(visible)]="newAnnoModel" [modal]="true" styleClass="mydialog">
 
 
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Add title</label>
-          <input class="uk-input" type="text" name="aname" [(ngModel)]="newAnnouncement.title"
-            placeholder="Announcement Title">
-        </div>
+  <form>
 
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Add Description</label>
-          <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="newAnnouncement.text"
-            placeholder="Announcement Description"></textarea>
-        </div>
-
+    <span class="p-float-label mt-2	">
+      <input pInputText id="title" name="aname" [(ngModel)]="newAnnouncement.title" type="text">
+      <label for="title">Announcement Title</label>
+    </span> <br>
+    <span class="p-float-label">
+      <textarea pInputTextarea rows="5" for="text" name="desc" [(ngModel)]="newAnnouncement.text"></textarea>
+      <label for="text">Announcement Description</label>
+    </span> <br>
 
 
-        <div *ngIf="!(newAnnouncement.fileUrl.length>0)" class=" uk-placeholder uk-text-center"
-          style="width: -webkit-fill-available;" uk-form-custom>
-          <input type="file" (change)="uploadFile($event)">
-          <div class="uk-width-1-1">
-            <span uk-icon="icon: cloud-upload"></span> &nbsp;
-            <div uk-form-custom>
-              <span>select File</span>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="newAnnouncement.fileUrl.length>0" class="chapter-box">
-          <br>
-          <span uk-icon="file-text"></span>
-          <a href="{{newAnnouncement.fileUrl}}">
-            {{fileName}} </a>
-          <a uk-icon="icon: trash" (click)="deleteRefrence()"></a>
-        </div>
+    <p-fileUpload *ngIf="!(newAnnouncement?.attache?.fileUrl)" (onSelect)="uploadFile($event)" [auto]="true">
+    </p-fileUpload>
+    <div *ngIf="newAnnouncement?.attache?.fileUrl">
+      <a href="{{newAnnouncement.attache.fileUrl}}">
+        {{newAnnouncement.attache.fileName}} </a>
+      <button pButton pRipple type="button" icon="pi pi-times-circle" class="p-button-rounded p-button-text"
+        (click)="deleteRefrence()"></button>
+    </div>
 
 
+  </form>
 
-
-
-        <div class="uk-margin" *ngIf="!updateId">
-          <button class="uk-button uk-button-secondary" (click)="addAnnouncement()">
-            Add Announcement
-          </button>
-        </div>
-        <div class="uk-margin" *ngIf="updateId">
-          <button class="uk-button uk-button-secondary" (click)="updateAnnouncement()">
-            update Announcement
-          </button>
-        </div>
-      </fieldset>
-    </form>
-
-
-  </div>
-</div>
-<br><br>
+  <ng-template pTemplate="footer">
+    <p-button *ngIf="!updateId" (click)="addAnnouncement()" label="Add Announcement"></p-button>
+    <p-button *ngIf="updateId" (click)="updateAnnouncement()" label="update Announcement"></p-button>
+  </ng-template>
+</p-dialog>

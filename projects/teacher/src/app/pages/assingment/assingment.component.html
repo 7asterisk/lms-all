@@ -1,134 +1,106 @@
 <br>
-<div class="uk-container">
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>Assingments</span></li>
-  </ul>
+<div class="container is-fluid">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Announcement Forums</li>
+    </ul>
+  </nav>
 
-  <div class="uk-card uk-card-default uk-card-body">
-    <button class="uk-button" [routerLink]="[ '/tr/course/create-assingment',{courseId:courseId,subBlockId:blockId} ]">
-      Create Assingment</button>
-
+  <div class="card card-content mb-3">
+    <p-button label="Create Assingment" [routerLink]="[ '/tr/course/create-assingment']"
+      [queryParams]="{courseId:courseId,subBlockId:blockId}"></p-button>
   </div>
 
-  <div uk-grid>
-    <div class="uk-width-1-1@m">
-      <table class="uk-table">
-        <thead>
-          <tr style="box-shadow: none;">
-            <th>Assingment</th>
-            <th>Deadline</th>
-            <th>Out Of</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="quiz-row" *ngFor="let assingment of allAssingment;let i=index">
-            <td>
-              <span uk-icon="file-text"></span>&nbsp; &nbsp;
-              <a href="{{assingment.assingmentUrl}}" class="uk-button uk-button-link"> {{assingment.assingmentTitle}}
-                <span uk-icon="download"></span></a>
-            </td>
-            <td>{{assingment.deadLine | date}}</td>
-            <td>{{assingment.outOf}}</td>
-            <td>
-              <button class="uk-button uk-button-link"
-                [routerLink]="[ '/tr/course/assingment-submission',{courseId:courseId,subBlockId:blockId,assingment:assingment._id} ]">
-                {{assingment.submission.length}}
-                Submission
-              </button>
-            </td>
-            <td>
-              <div class="uk-inline">
-                <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
-                <div uk-dropdown="mode: click">
-                  <ul class="uk-list">
-                    <li>
-                      <a (click)="editAssingment(assingment)" uk-toggle="target: #edit-assingment">
-                        <span uk-icon="pencil"></span> &nbsp;&nbsp;
-                        Edit
-                      </a>
-                    </li>
-                    <li>
-                      <a (click)="deleteAssingment(assingment._id,assingment.assingmentUrl)">
-                        <span uk-icon="trash"></span> &nbsp;&nbsp;
-                        Delete
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
+
+  <div class="columns is-multiline is-vcentered">
+    <div class="column is-4" *ngFor="let assingment of allAssingment">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{assingment.assingmentTitle}}
+          </p>
+        </header>
+        <div class="card-content">
+          <p> <i class="pi pi-file"></i>
+            <a href="{{assingment.assingmentUrl}}"> {{assingment.assingmentTitle}} </a>
+          </p>
+          <p class="">DeadLine:{{assingment.deadLine | date:'d/M/yy, h:mm a'}} </p>
+          <p>marks: {{assingment.outOf}}
+          </p>
+          <p>
+            Description:
+            <span>{{assingment.assingmentDesc}}</span>
+          </p>
+          <p>Submission: {{assingment.submission.length}}</p>
+        </div>
+        <footer class="card-footer">
+          <button pButton pRipple type="button" [routerLink]="[ '/tr/course/assingment-submission']"
+            [queryParams]="{courseId:courseId,subBlockId:blockId,assingment:assingment._id}" label="Submission"
+            icon="pi pi-users" class="p-button-text card-footer-item"></button>
+          <button pButton pRipple type="button" label="Edit" icon="pi pi-pencil" class="p-button-text card-footer-item"
+            (click)="editAssingment(assingment);showEditDilog=true">
+          </button>
+          <button pButton pRipple type="button" label="Delete" icon="pi pi-trash"
+            class="p-button-text p-button-danger card-footer-item"
+            (click)="deleteAssingment(assingment._id,assingment.assingmentUrl)"></button>
+
+        </footer>
+      </div>
+    </div>
   </div>
 </div>
 <br>
 
 
-<div id="edit-assingment" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    <button class="uk-modal-close-default" (click)="reset()" type="button" uk-close></button>
-    <form>
-      <fieldset class="uk-fieldset">
 
-        <legend class="uk-legend">Add New Assingment</legend>
+<p-dialog header="Add New Assingment" [(visible)]="showEditDilog" class="mydialog" [modal]="true">
+  <form>
+    <fieldset class="uk-fieldset">
+
+      <p-fileUpload name="myfile" *ngIf="!newAssingment.assingmentUrl" (onSelect)="uploadFile($event)"
+        [showUploadButton]="false" [showCancelButton]="false" chooseLabel="Select File"></p-fileUpload>
+
+      <div *ngIf="newAssingment.assingmentUrl" class="chapter-box">
+        <i class="pi pi-file"></i>
+        <a href="{{newAssingment.assingmentUrl}}">
+          {{newAssingment.assingmentTitle}} </a>
+        <button pButton pRipple type="button" icon="pi pi-times" (click)="deleteRefrence()"
+          class="p-button-rounded p-button-danger p-button-text"></button>
+      </div>
 
 
-        <div *ngIf="!newAssingment.assingmentUrl" class=" uk-placeholder uk-text-center"
-          style="width: -webkit-fill-available;" uk-form-custom>
-          <input type="file" (change)="uploadFile($event)">
-          <div class="uk-width-1-1">
-            <span uk-icon="icon: cloud-upload"></span> &nbsp;
-            <div uk-form-custom>
-              <span>select File</span>
-            </div>
-          </div>
+      <div class="mb-2">
+        <label class="uk-form-label" for="form-stacked-select">Add title</label>
+        <input type="text" pInputText name="aname" [(ngModel)]="newAssingment.assingmentTitle"
+          placeholder="Assingment Title" />
+      </div>
+      <div class="uk-grid-small" uk-grid>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="form-stacked-select">Add Deadline</label>
+          <input pInputText type="date" name="deadline" [(ngModel)]="newAssingment.deadLine" />
         </div>
-
-        <div *ngIf="newAssingment.assingmentUrl" class="chapter-box">
-          <br>
-          <span uk-icon="file-text"></span>
-          <a href="{{newAssingment.assingmentUrl}}">
-            {{newAssingment.assingmentTitle}} </a>
-          <a uk-icon="icon: trash" (click)="deleteRefrence()"></a>
+        <div class=" uk-width-1-2@s">
+          <label class="uk-form-label" for="form-stacked-select">Marks</label>
+          <input type="number" name="marks" placeholder="outof" [(ngModel)]="newAssingment.outOf" pInputText />
         </div>
+      </div>
+
+      <div class="mb-2">
+        <label class="uk-form-label" for="form-stacked-select">Add Description</label>
+        <textarea [rows]="2" pInputTextarea autoResize="autoResize" name="desc"
+          [(ngModel)]="newAssingment.assingmentDesc" placeholder="Assingment Description"></textarea>
+      </div>
+
+      <div class="mb-2">
+        <p-button label=" update Assingment" (click)="updateAssingment()"></p-button>
+      </div>
+    </fieldset>
+  </form>
+
+</p-dialog>
 
 
-
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Add title</label>
-          <input class="uk-input" type="text" name="aname" [(ngModel)]="newAssingment.assingmentTitle"
-            placeholder="Assingment Title">
-        </div>
-        <div class="uk-grid-small" uk-grid>
-          <div class="uk-width-1-2@s">
-            <label class="uk-form-label" for="form-stacked-select">Add Deadline</label>
-            <input class="uk-input " type="date" name="deadline" [(ngModel)]="newAssingment.deadLine">
-          </div>
-          <div class=" uk-width-1-2@s">
-            <label class="uk-form-label" for="form-stacked-select">Marks</label>
-            <input class="uk-input" type="number" name="marks" placeholder="outof" [(ngModel)]="newAssingment.outOf">
-          </div>
-        </div>
-
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-select">Add Description</label>
-          <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="newAssingment.assingmentDesc"
-            placeholder="Assingment Description"></textarea>
-        </div>
-
-        <div class="uk-margin">
-          <button class="uk-button uk-button-secondary" (click)="updateAssingment()">
-            update Assingment
-          </button>
-        </div>
-      </fieldset>
-    </form>
-
-
-  </div>
-</div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="bottom-right"></p-toast>

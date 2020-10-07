@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { DataService } from '../../../data.service';
-declare var UIkit;
 
 @Component({
   selector: 'app-create-assingment',
@@ -31,12 +30,13 @@ export class CreateAssingmentComponent implements OnInit {
     this.today = now.toISOString();
     // console.log(this.today);
 
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.blockId = params.subBlockId;
       this.courseId = params.courseId;
       this.newAssingment.courseId = this.courseId;
       this.newAssingment.blockId = this.blockId;
       this.getCourse();
+      this.getAssingment();
     });
   }
 
@@ -46,7 +46,7 @@ export class CreateAssingmentComponent implements OnInit {
     };
   }
   uploadFile(event) {
-    const file = event.target.files[0];
+    const file = event.files[0];
     const name = file.name;
     this.fileName = file.name;
     const lastDot = name.lastIndexOf('.');
@@ -74,25 +74,17 @@ export class CreateAssingmentComponent implements OnInit {
     });
   }
 
-  deleteAssingment(id, url) {
-    UIkit.modal.confirm('Delete Selected Assingment Permanently').then(() => {
-      this.storage.storage.refFromURL(url).delete().then(() => {
-        this.dataService.deleteItem('assingments/' + id).subscribe(() => {
-
-        });
-      });
+  getAssingment() {
+    this.dataService.getFilterData({ to: 'assingments', filter: { courseId: this.courseId, blockId: this.blockId }, projection: {} }
+    ).subscribe(data => {
+      console.log(data);
+      this.allAssingment = data;
     });
   }
 
   addAssingment() {
     // console.log(this.newAssingment);
     this.dataService.addItem('assingments', this.newAssingment).subscribe(data => {
-      UIkit.notification({
-        message: 'Added Successfully',
-        status: 'primary',
-        pos: 'top-right',
-        timeout: 5000
-      });
       this.reset();
       this.router.navigate(['/tr/course/assingment', { courseId: this.courseId, subBlockId: this.blockId }]);
     });

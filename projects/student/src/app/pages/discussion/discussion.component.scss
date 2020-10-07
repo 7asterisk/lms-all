@@ -1,21 +1,21 @@
-.uk-comment {
-  padding: 10px;
+.content p:not(:last-child) {
+  margin-bottom: 0em;
 }
 
-.uk-comment-list> :nth-child(n + 2) {
-  margin-top: 20px;
+.card-content {
+  background-color: #fff;
 }
 
-.uk-comment-list .uk-comment~ul {
-  margin: 10px 0 0 0;
-  padding-left: 30px;
-  list-style: none;
+.vote-count {
+  vertical-align: super;
+  margin-right: 10px;
 }
 
-.uk-comment-header {
-  margin-bottom: 0px;
+.media {
+  background-color: #fff;
+  padding: 1rem 2rem;
 }
 
-.uk-comment-list .uk-comment~ul> :nth-child(n + 2) {
-  margin-top: 10px;
+:host ::ng-deep .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item {
+  padding: 0.2rem;
 }

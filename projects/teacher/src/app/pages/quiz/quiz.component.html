@@ -1,73 +1,52 @@
 <br>
-<div class="uk-container">
-  <div>
-    <ul class="uk-breadcrumb">
-      <li><a>{{courseName}}</a></li>
-      <li><span>Quiz</span></li>
+<div class="container is-fluid">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Quiz</li>
     </ul>
-    <div class="uk-card uk-card-default uk-card-body">
-      <button class="uk-button" [routerLink]="[ '/tr/course/create-quiz',{courseId:courseId,subBlockId:subBlockId} ]">
-        Create Quiz</button>
-    </div>
-
-  </div>
-  <div uk-grid>
-    <div class="uk-width-1-1@m">
-      <table class="uk-table">
-        <thead>
-          <tr style="box-shadow: none;">
-            <th>Title</th>
-            <th>Deadline</th>
-            <th>Quetions</th>
-            <th>Out Of</th>
-            <th>Attempts</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="quiz-row" *ngFor="let quiz of allQuiz">
-            <td>{{quiz.quizTitle  }}</td>
-            <td>{{quiz.deadLine | date}}</td>
-            <td>{{quiz.noOfQue}}</td>
-            <td>{{quiz.outOf}}</td>
-            <td>{{quiz.noOfAttempt}}</td>
-            <td>
-              <button class="uk-button uk-button-link"
-                [routerLink]="[ '/tr/course/quiz-submission',{courseId:courseId,subBlockId:subBlockId,quizId:quiz._id} ]">
-                {{quiz.submission.length}}
-                Submission
-              </button>
-            </td>
-            <td>
-              <div class="uk-inline">
-                <button class="uk-button uk-button-link" type="button"><span uk-icon="more-vertical"></span></button>
-                <div uk-dropdown="mode: click">
-                  <ul class="uk-list">
-                    <li>
-                      <a
-                        [routerLink]="[ '/tr/course/create-quiz',{courseId:courseId,subBlockId:subBlockId,quizId:quiz._id} ]">
-                        <span uk-icon="pencil"></span> &nbsp;&nbsp;
-                        Edit
-                      </a>
-                    </li>
-                    <li>
-                      <a (click)="deleteQuiz(quiz._id)">
-                        <span uk-icon="trash"></span> &nbsp;&nbsp;
-                        Delete
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="uk-width-expand ">
-
-    </div>
+  </nav>
+  <div class="card card-content">
+    <button pButton type="button" label="Create Quiz" [routerLink]="[ '/tr/course/create-quiz']"
+      [queryParams]="{courseId:courseId,subBlockId:subBlockId}">
+    </button>
   </div>
 
+  <br>
+
+  <div class="columns is-multiline is-vcentered">
+    <div class="column is-4" *ngFor="let quiz of allQuiz">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{quiz.quizTitle  }}
+          </p>
+        </header>
+        <div class="card-content">
+          <p class="">DeadLine:{{quiz.deadLine  | date:'d/M/yy, h:mm a'}} </p>
+          <p>Quetions:{{quiz.noOfQue}} </p>
+          <p>marks: {{quiz.outOf}}
+          </p>
+          <p>
+            Attempts :
+            <span>{{quiz.noOfAttempt}}</span>
+          </p>
+          <p>Submission: {{quiz.submission.length}}</p>
+        </div>
+        <footer class="card-footer">
+          <button pButton pRipple type="button" [routerLink]="[ '/tr/course/quiz-submission']" icon="pi pi-users"
+            [queryParams]="{courseId:courseId,subBlockId:subBlockId,quizId:quiz._id}" label="Submission"
+            class="p-button-text card-footer-item"></button>
+          <button pButton pRipple type="button" label="Edit" icon="pi pi-pencil" class="p-button-text card-footer-item"
+            [routerLink]="[ '/tr/course/create-quiz']"
+            [queryParams]="{courseId:courseId,subBlockId:subBlockId,quizId:quiz._id}">
+          </button>
+          <button pButton pRipple type="button" label="Delete" icon="pi pi-trash"
+            class="p-button-text p-button-danger card-footer-item" (click)="deleteQuiz(quiz._id)"></button>
+
+        </footer>
+      </div>
+    </div>
+  </div>
 </div>
 <br>

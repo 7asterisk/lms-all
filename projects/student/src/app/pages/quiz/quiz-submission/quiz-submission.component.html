@@ -1,18 +1,20 @@
-<div class="uk-container uk-container-xsmall">
+<div class="container is-fluid">
   <br>
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>quiz</span></li>
-    <li><span>{{quizTitle}}</span></li>
-  </ul>
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>quiz</li>
+      <li>{{quizTitle}}</li>
+    </ul>
+  </nav>
 
   <div class="qus-sheet" *ngFor="let que of questions;let j=index">
     <div>
-      <div uk-grid>
-        <div class="uk-width-5-6">
+      <div class="columns">
+        <div class="column is-9">
           <p><b> {{j+1}})</b> {{que.que}}</p>
         </div>
-        <div class="uk-width-expand">
+        <div class="column is-3">
           <B>
             {{anss[j].givenMarks}}/{{que.assingedMarks}}
           </B>
@@ -21,18 +23,18 @@
       <br>
 
       <div *ngIf="que.ops.length != 0">
-        <div style="display: flex; align-items: center;" *ngFor="let op of que.ops ; let i = index">
-          <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span>
-          <a *ngIf="que.queType !=='2'"
-            [ngClass]="{'uk-card-danger': anss[j]?.givenAns[0] === op.op,'uk-card-primary':que.anss[0] === op.op,'uk-card-secondry':anss[j]?.givenAns[0] === op.op && que.anss[0] === op.op}"
-            class="uk-display-block uk-box-shadow-small options uk-card uk-card-body uk-card-small uk-link-toggle uk-width-large">
-            <p>{{op.op}}</p>
-          </a>
-          <a [ngClass]="{'uk-card-danger':anss[j].givenAns.indexOf(op.op) > -1,'uk-card-primary':que.anss.indexOf(op.op)>-1,'uk-card-secondry':anss[j].givenAns.indexOf(op.op) > -1 && que.anss.indexOf(op.op)>-1 }"
-            *ngIf="que.queType ==='2'"
-            class="uk-display-block uk-box-shadow-small options uk-card uk-card-body uk-card-small uk-link-toggle uk-width-large">
-            <p>{{op.op}}</p>
-          </a>
+        <div *ngFor="let op of que.ops ; let i = index">
+          <div *ngIf="que.queType !=='2'" class="card"
+            [ngClass]="{'uk-card-danger': anss[j]?.givenAns[0] === op.op,'uk-card-primary':que.anss[0] === op.op,'uk-card-secondry':anss[j]?.givenAns[0] === op.op && que.anss[0] === op.op}">
+            <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span> &nbsp;&nbsp;
+            <span>{{op.op}}</span>
+          </div>
+          <div class="card"
+            [ngClass]="{'uk-card-danger':anss[j].givenAns.indexOf(op.op) > -1,'uk-card-primary':que.anss.indexOf(op.op)>-1,'uk-card-secondry':anss[j].givenAns.indexOf(op.op) > -1 && que.anss.indexOf(op.op)>-1 }"
+            *ngIf="que.queType ==='2'">
+            <span class="uk-text-large  uk-margin-small-right uk-text-bold uk-text-muted">{{i+1}}</span> &nbsp;&nbsp;
+            <span>{{op.op}}</span>
+          </div>
         </div>
       </div>
       <div *ngIf="que.ops.length == 0">

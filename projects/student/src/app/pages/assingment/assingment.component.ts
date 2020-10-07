@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { DataService } from '../../data.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { NgProgressComponent } from 'ngx-progressbar';
 
 declare var UIkit;
 
@@ -28,6 +29,17 @@ export class AssingmentComponent implements OnInit {
   newSubmition = { submissionDate: Date.now(), studentId: '', submissionUrl: '' }
   activeAssingment = [];
   inActiveAssingment = [];
+
+  remark = false;
+  showForm = false;
+
+
+  @ViewChild(NgProgressComponent) progressBar: NgProgressComponent;
+
+  ngAfterViewInit() {
+    this.progressBar.start();
+  }
+
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
@@ -39,7 +51,8 @@ export class AssingmentComponent implements OnInit {
     this.today = now.toISOString();
     this.studentId = this.auth.getUserId();
     this.newSubmition.studentId = this.studentId;
-    this.route.params.subscribe(params => {
+
+    this.route.queryParams.subscribe(params => {
       this.blockId = params.subBlockId;
       this.courseId = params.courseId;
       this.getAssingment();
@@ -49,7 +62,9 @@ export class AssingmentComponent implements OnInit {
 
 
   uploadFile(event, assingmentId) {
-    const file = event.target.files[0];
+    console.log(event);
+
+    const file = event.files[0];
     const name = file.name;
     this.fileName = file.name;
     const lastDot = name.lastIndexOf('.');
@@ -92,12 +107,18 @@ export class AssingmentComponent implements OnInit {
     this.conform = event.target.checked;
   }
 
-  submissionForm(assingment) {
+  submissionForm(tosShow, assingment) {
     this.toSubmit = assingment;
+    if (tosShow === 'remark') {
+      this.remark = true;
+    } else {
+      this.showForm = true;
+    }
     if (this.toSubmit.submission.length > 0) {
       this.newSubmition.studentId = this.toSubmit.submission[0].studentId;
       this.newSubmition.submissionDate = Date.now();
       this.newSubmition.submissionUrl = this.toSubmit.submission[0].submissionUrl;
+
     } else {
       this.newSubmition.studentId = this.studentId;
     }

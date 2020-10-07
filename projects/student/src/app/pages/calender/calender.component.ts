@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarOptions, formatDate } from '@fullcalendar/angular'; // useful for typechecking
+import { CalendarOptions } from '@fullcalendar/angular'; // useful for typechecking
 import { DataService } from '../../data.service';
 import { AuthService } from 'src/app/auth/auth.service';
-declare var UIkit;
+
+
 @Component({
   selector: 'app-calender',
   templateUrl: './calender.component.html',
@@ -12,6 +13,7 @@ export class CalenderComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
+    height: 'auto',
     eventClick: this.handleEventClick.bind(this),
     events: []
   };
@@ -21,7 +23,7 @@ export class CalenderComponent implements OnInit {
   allQuiz = []
   allEvent = [];
   selectedEvent = { courseName: '', courseId: '', title: '', deadLine: '', eventType: '' }
-
+  displayModel = false;
   constructor(
     private dataService: DataService,
     private authService: AuthService,
@@ -71,7 +73,7 @@ export class CalenderComponent implements OnInit {
       populate: { path: 'courseId', select: 'courseId courseName' }
     }
     ).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       let allQz: any = data;
       let j = allQz.length;
       allQz.forEach(element => {
@@ -92,19 +94,23 @@ export class CalenderComponent implements OnInit {
 
 
   handleEventClick(arg) {
-    console.log(this.allEvent);
-
+    // console.log(this.allEvent);
+    this.displayModel = true;
     const index = this.allEvent.findIndex(x => x.title === arg.el.text);
     console.log(this.allEvent[index]);
     this.dataService.getItem(this.allEvent[index].api).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       if (data['quizTitle']) {
-        this.selectedEvent = { courseName: this.allEvent[index].courseName, courseId: data['courseId'], title: data['quizTitle'], deadLine: data['deadLine'], eventType: 'qz' }
+        this.selectedEvent = {
+          courseName: this.allEvent[index].courseName, courseId: data['courseId'],
+          title: data['quizTitle'], deadLine: data['deadLine'], eventType: 'qz'
+        };
       } else {
-        this.selectedEvent = { courseName: this.allEvent[index].courseName, courseId: data['courseId'], title: data['assingmentTitle'], deadLine: data['deadLine'], eventType: 'as' }
+        this.selectedEvent = {
+          courseName: this.allEvent[index].courseName, courseId: data['courseId'], title: data['assingmentTitle'],
+          deadLine: data['deadLine'], eventType: 'as'
+        };
       }
-      UIkit.modal('#event-detail').show();
-
     })
   }
 

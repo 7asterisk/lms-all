@@ -1,0 +1,84 @@
+<div class="container is-fluid">
+  <br>
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Polls Forums</li>
+    </ul>
+  </nav>
+
+  <div class="card card-content ">
+    <button pButton type="button" (click)="newPoleModel=true" label="New Pole"></button>
+  </div>
+  <br>
+
+
+
+  <div class="columns is-multiline">
+    <div class="column is-6" *ngFor="let pole of allPole">
+      <div class="card card-content mb-2">
+        <button pButton pRipple type="button" icon="pi pi-trash" style="float: right" (click)="deletePole(pole._id)"
+          *ngIf="pole.teacherId == teacherId" class="p-button-rounded p-button-danger p-button-text"></button>
+
+        <p>{{pole.text}}</p>
+
+        <br>
+        <div *ngIf="!hasVoted(pole)">
+          <button *ngFor="let ch of pole.choices" pButton pRipple type="button" label="{{ch.text}}"
+            (click)="selectChoice(pole._id,ch._id)" class="p-button-outlined p-button-sm pole-btn mb-2"></button>
+        </div>
+        <div *ngIf="hasVoted(pole)">
+          <div class="mb-2" *ngFor="let ch of pole.choices">
+            <span class="pole-text"> {{ch.text}}</span>
+            <p-progressBar [style]="{'height': '26px','border-radius': '4px'}"
+              [value]="ch?.totalSelections?ch.totalSelections:0" [showValue]="false">
+            </p-progressBar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<p-dialog header="Create New pole" [(visible)]="newPoleModel" [modal]="true" styleClass="mydialog">
+  <form>
+    <span class="p-float-label mt-2	">
+      <input pInputText id="text" [(ngModel)]="newPole.text" name="text" type="text">
+      <label for="text">Pole Question</label>
+    </span> <br>
+
+    <p-fieldset legend="Choices">
+      <div class="columns mb-2 is-mobile" *ngFor="let choice of newChoices;let i =index">
+        <div class="column is-10">
+          <span class="p-float-label ">
+            <input pInputText id="text" [(ngModel)]="choice.text" placeholder="choice{{i+1}}" name="choice" type="text">
+          </span>
+        </div>
+        <div class="column is-2" *ngIf="i>1">
+          <button pButton pRipple type="button" (click)="newChoices.splice(i,1)" icon="pi pi-times"
+            class="p-button-rounded p-button-outlined"></button>
+        </div>
+      </div>
+      <div class="columns mb-2 is-mobile">
+        <div class="column is-10">
+
+        </div>
+        <div class="column is-2">
+          <button pButton pRipple type="button" (click)="newChoices.push({text:''})" icon="pi pi-plus"
+            class="p-button-rounded p-button-outlined"></button>
+        </div>
+      </div>
+    </p-fieldset>
+    <br>
+    <button pButton type="button" (click)="addPole()" label="Create Pole"></button>
+
+  </form>
+</p-dialog>
+
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

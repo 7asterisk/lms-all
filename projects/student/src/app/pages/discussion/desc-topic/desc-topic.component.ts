@@ -17,6 +17,7 @@ export class DescTopicComponent implements OnInit {
   allDiscussion;
   courseName: any;
   replyId;
+  newTopicModel = false;
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
@@ -26,7 +27,7 @@ export class DescTopicComponent implements OnInit {
   ngOnInit(): void {
     this.studentId = this.auth.getUserId();
     this.newDiscussion.studentId = this.studentId;
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.subBlockId = params.subBlockId;
       this.courseId = params.courseId;
       this.newDiscussion.courseId = this.courseId;
@@ -42,7 +43,7 @@ export class DescTopicComponent implements OnInit {
       this.newDiscussion.time = Date.now();
       this.dataService.addItem('discussiontopic', this.newDiscussion).subscribe(() => {
         this.getDiscussion();
-        UIkit.modal('#newTopic').hide();
+        this.newTopicModel = false;
         this.reset();
       });
     }
@@ -65,7 +66,6 @@ export class DescTopicComponent implements OnInit {
       this.allDiscussion = data;
     });
   }
-
   getCourse() {
     this.dataService.getFilterData({
       to: 'course', filter: { _id: this.courseId },

@@ -17,6 +17,8 @@ export class CoursesComponent {
   quizBadge;
   newGrade;
   today;
+
+  items;
   constructor(private router: Router, private dataService: DataService, private auth: AuthService) {
 
 
@@ -30,12 +32,22 @@ export class CoursesComponent {
     }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const params = event.url.split(';', 3);
+        let params = event.url.split(';', 3);
         if (params.length > 1) {
           this.courseId = params[1].split('=')[1];
           this.subBlockId = params[2].split('=')[1];
           this.studentId = this.auth.getUserId();
           this.getNotification();
+          this.setNav(this.fullNav);
+        }
+        else if (event.url.split('?', 3).length > 1) {
+          params = event.url.split('?', 3);
+          params = params[1].split('&', 3)
+          this.courseId = params[0].split('=')[1];
+          this.subBlockId = params[1].split('=')[1];
+          this.studentId = this.auth.getUserId();
+          this.getNotification();
+          this.setNav(this.fullNav);
         }
       }
     });
@@ -63,7 +75,11 @@ export class CoursesComponent {
         if (element.submission.length === 0 && deadLine >= today) {
           this.assingmentBadge += 1;
         }
+
       });
+      if (this.assingmentBadge > 0) {
+        this.setNav(this.fullNav);
+      }
       // console.log(this.assingmentBadge);
     });
   }
@@ -86,6 +102,9 @@ export class CoursesComponent {
           this.quizBadge += 1;
         }
       });
+      if (this.quizBadge > 0) {
+        this.setNav(this.fullNav);
+      }
       // console.log(this.quizBadge);
     });
   }
@@ -104,9 +123,77 @@ export class CoursesComponent {
   }
 
 
+  setMenuItem() {
+
+    this.items = [
+      { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: '/st/home' },
+      {
+        label: 'Notes', icon: 'pi pi-fw pi-file',
+        routerLink: '/st/course/notes',
+        queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+      },
+      {
+        label: 'Assingments', icon: 'pi pi-fw pi-list', routerLink: '/st/course/assingment',
+        queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+      },
+      {
+        label: 'Quiz', icon: 'pi pi-fw pi-check-square', routerLink: '/st/course/quiz',
+        queryParams: { courseId: this.courseId, subBlockId: this.subBlockId },
+        badge: '1'
+      },
+      {
+        label: 'Grade', icon: 'pi pi-fw pi-chart-line', routerLink: '/st/course/grade',
+        queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+      },
+      {
+        label: 'Discussion', icon: 'pi pi-fw pi-comments', routerLink: '/st/course/discussion-topic',
+        queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+      },
+      {
+        label: 'Polls', icon: 'pi pi-fw pi-chart-bar', routerLink: '/st/course/polls',
+        queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+      }
+    ];
+
+  }
+
   setNav(full) {
     localStorage.setItem('fullNav', full);
     this.fullNav = full;
+    if (this.fullNav == 0) {
+      this.items = [
+        { icon: 'pi pi-fw pi-home', routerLink: '/st/home' },
+        {
+          icon: 'pi pi-fw pi-file',
+          routerLink: '/st/course/notes',
+          queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+        },
+        {
+          icon: 'pi pi-fw pi-list', routerLink: '/st/course/assingment',
+          queryParams: { courseId: this.courseId, subBlockId: this.subBlockId },
+          badge: this.assingmentBadge
+        },
+        {
+          icon: 'pi pi-fw pi-check-square', routerLink: '/st/course/quiz',
+          queryParams: { courseId: this.courseId, subBlockId: this.subBlockId },
+          badge: "1"
+        },
+        {
+          icon: 'pi pi-fw pi-chart-line', routerLink: '/st/course/grade',
+          queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+        },
+        {
+          icon: 'pi pi-fw pi-comments', routerLink: '/st/course/discussion-topic',
+          queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+        },
+        {
+          icon: 'pi pi-fw pi-chart-bar', routerLink: '/st/course/polls',
+          queryParams: { courseId: this.courseId, subBlockId: this.subBlockId }
+        }
+      ];
+    } else {
+      this.setMenuItem();
+    }
   }
 
 }

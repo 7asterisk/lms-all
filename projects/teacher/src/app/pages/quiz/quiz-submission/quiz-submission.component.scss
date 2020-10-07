@@ -13,19 +13,23 @@ tr {
   cursor: pointer;
 }
 
-.uk-table td {
-  vertical-align: middle;
+.table {
+  background-color: transparent;
 }
 
-.uk-table th {
-  padding: 10px 12px;
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  background: transparent;
 }
 
-.uk-card-body {
-  display: flow-root;
-  padding: 10px 10px;
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent;
 }
 
-.quiz-row {
-  cursor: pointer;
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: transparent;
+}
+
+
+:host ::ng-deep .p-tabview .p-tabview-panels {
+  background: transparent;
 }

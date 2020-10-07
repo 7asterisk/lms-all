@@ -1,5 +1,10 @@
-.uk-card-body {
+.card {
   display: flow-root;
   padding: 10px 10px;
-  border-left: 5px solid #286090;
+  border-left: 5px solid #673AB7;
+}
+
+.card-content {
+  background-color: #fff;
+  cursor: pointer;
 }

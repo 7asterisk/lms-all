@@ -1,50 +1,63 @@
-<div class="uk-container">
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>Discussion Forums</span></li>
-  </ul>
+<div class="container is-fluid">
+  <br>
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Discussion Forums</li>
+    </ul>
+  </nav>
 
-  <div class="uk-card uk-card-body uk-card-default ">
-    <a class="uk-button uk-button-primary" href="#newTopic" uk-toggle>New Topic</a>
+
+  <div class="card card-content ">
+    <button pButton type="button" (click)="newTopicModel=true" label="New Topic"></button> &nbsp; &nbsp;
   </div>
-  <a *ngFor="let disctopic of allDiscussion"
-    [routerLink]="[ '/tr/course/discussion',{courseId:courseId,subBlockId:subBlockId,discId:disctopic._id}]"
-    class="uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle">
-    <h4 class="uk-card-title"><span class="uk-link-heading">{{disctopic.title}}</span></h4>
-    <span>{{disctopic.studentId?.studentName}}</span>
-    <span>{{disctopic.teacherId?.teacherName}}</span>
-  </a>
-</div>
+  <br>
 
-
-<div id="newTopic" uk-modal>
-  <div class="uk-modal-dialog">
-    <button class="uk-modal-close-default" type="button" uk-close></button>
-    <div class="uk-modal-header">
-      <h2 class="uk-modal-title">Modal Title</h2>
-    </div>
-    <div class="uk-modal-body">
-      <form class="uk-form-stacked">
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Title</label>
-          <div class="uk-form-controls">
-            <input class="uk-input" id="form-stacked-text" [(ngModel)]="newDiscussion.title" name="title" type="text"
-              placeholder="Write a descriptive title">
+  <div class="columns">
+    <div class="column is-6" *ngFor="let disctopic of allDiscussion">
+      <article class="media">
+        <div class="media-left">
+          <p>
+            2 <i class="pi pi-comments"></i>
+          </p>
+        </div>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <a [routerLink]="[ '/tr/course/discussion']"
+                [queryParams]="{courseId:courseId,subBlockId:subBlockId,discId:disctopic._id}">
+                <strong>{{disctopic.title}} </strong></a> <br>
+              <small> {{disctopic.studentId.studentName}} </small>
+              <small>{{disctopic.time|date:'d/M/yy, h:mm a'}}</small>
+              <br>
+              {{disctopic.text}}
+            </p>
           </div>
         </div>
-
-
-        <div class="uk-margin">
-          <label class="uk-form-label" for="form-stacked-text">Body</label>
-          <textarea class="uk-textarea" rows="5" name="body" placeholder="Provide supporting details or Context"
-            [(ngModel)]="newDiscussion.text"></textarea>
-        </div>
-
-      </form>
+      </article>
     </div>
-    <div class="uk-modal-footer uk-text-right">
-      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-      <button class="uk-button uk-button-primary" type="button" (click)="addDiscussion()">Post</button>
-    </div>
+
   </div>
+
 </div>
+
+
+<p-dialog header="Create New Discussion Topic " [(visible)]="newTopicModel" [modal]="true" styleClass="mydialog">
+
+  <form>
+    <fieldset>
+      <span class="p-float-label mt-2	">
+        <input pInputText id="title" [(ngModel)]="newDiscussion.title" name="title" type="text">
+        <label for="title">Title</label>
+      </span> <br>
+      <span class="p-float-label">
+        <textarea pInputTextarea rows="5" for="text" name="body" [(ngModel)]="newDiscussion.text"></textarea>
+        <label for="text">Body</label>
+      </span> <br>
+    </fieldset>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button (click)="newTopicModel=false" label="Cancel" styleClass="p-button-text"></p-button>
+    <p-button (click)="addDiscussion()" label="Post"></p-button>
+  </ng-template>
+</p-dialog>

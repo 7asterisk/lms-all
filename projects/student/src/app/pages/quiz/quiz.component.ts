@@ -19,6 +19,7 @@ export class QuizComponent implements OnInit {
   studentId;
   quizId: any;
   quizTitle: any;
+  beforStartPanal = false;
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private auth: AuthService) { }
 
@@ -26,9 +27,11 @@ export class QuizComponent implements OnInit {
     const now = new Date;
     this.studentId = this.auth.getUserId();
     this.today = now.toISOString();
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.subBlockId = params.subBlockId;
       this.courseId = params.courseId;
+      console.log(this.courseId);
+
       this.getCourse();
       this.getQuiz();
     });
@@ -36,6 +39,7 @@ export class QuizComponent implements OnInit {
   startQuiz(id, title) {
     this.quizId = id;
     this.quizTitle = title;
+    this.beforStartPanal = true;
   }
   getQuiz() {
     this.dataService.getFilterData({

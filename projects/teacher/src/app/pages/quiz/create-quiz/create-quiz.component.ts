@@ -20,6 +20,8 @@ export class CreateQuizComponent implements OnInit {
     quizTitle: '', outOf: 0, activateTime: '', deadLine: '', qTime: '', noOfAttempt: '',
     courseId: '', blockId: '', questions: [], noOfQue: 0
   };
+  marksTypeOP = [{ label: 'evenly', value: '1' },
+  { label: 'maualy', value: '2' }];
   Ques = [];
   courseName: any;
   constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router) { }
@@ -27,7 +29,7 @@ export class CreateQuizComponent implements OnInit {
   ngOnInit(): void {
     const now = new Date;
     this.today = now.toISOString();
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.subBlockId = params.subBlockId;
       this.courseId = params.courseId;
       if (params.quizId) {
@@ -54,17 +56,6 @@ export class CreateQuizComponent implements OnInit {
     }
     console.log(this.newQuiz);
     this.dataService.addItem('quiz', this.newQuiz).subscribe(data => {
-      if (this.allQuiz) {
-        // this.allQuiz.push(data);
-      } else {
-        // this.getQuiz();
-      }
-      UIkit.notification({
-        message: 'Added Successfully',
-        status: 'primary',
-        pos: 'top-right',
-        timeout: 5000
-      });
     });
   }
   addQues() {
@@ -115,18 +106,9 @@ export class CreateQuizComponent implements OnInit {
   updateQuiz() {
     this.newQuiz.questions = this.Ques;
     this.newQuiz.noOfQue = this.Ques.length;
-    // console.log(this.newQuiz);
-
     this.dataService.updateItem('quiz/' + this.toUpdate, this.newQuiz).subscribe(() => {
       this.reset();
-
-      UIkit.notification({
-        message: 'Updateed Successfully',
-        status: 'primary',
-        pos: 'top-right',
-        timeout: 5000
-      });
-      this.router.navigate(['/tr/course/quiz', { courseId: this.courseId, subBlockId: this.subBlockId }]);
+      this.router.navigate(['/tr/course/quiz'], { queryParams: { courseId: this.courseId, subBlockId: this.subBlockId } });
     });
   }
 

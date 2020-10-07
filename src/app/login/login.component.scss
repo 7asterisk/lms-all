@@ -1,3 +1,13 @@
-.uk-inline {
-    width: 100%;
+.mydialog {
+  width: 50vw;
+}
+
+@media screen and (max-width: 40em) {
+  .mydialog {
+    width: 75vw;
+  }
+}
+
+:host ::ng-deep .p-button {
+  width: -webkit-fill-available;
 }

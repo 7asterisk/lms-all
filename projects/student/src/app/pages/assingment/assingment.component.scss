@@ -1,35 +1,24 @@
-.fileUpload {
-  position: relative;
-  overflow: hidden;
-  margin: 10px;
+.card-content {
+  background-color: #fff;
+  padding: 1.5rem;
 }
 
-.fileUpload input.upload {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-  cursor: pointer;
-  opacity: 0;
-  filter: alpha(opacity=0);
+p {
+  margin-bottom: 10px;
 }
 
-table {
-  border-collapse: separate;
-  border-spacing: 0 20px;
+:host ::ng-deep .p-tabview .p-tabview-panels {
+  background: transparent;
 }
 
-table tr td {
-  padding: 10px 15px !important;
-  background-color: white;
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  background: transparent;
 }
 
-tr {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: transparent;
 }
 
-.uk-table td {
-  vertical-align: middle;
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent;
 }

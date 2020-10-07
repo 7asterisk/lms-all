@@ -100,7 +100,7 @@ export class AssingMarksComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.route.params.subscribe(parms => {
+    this.route.queryParams.subscribe(parms => {
       this.quizId = parms.quizId;
       this.studentId = parms.studentId;
       this.courseId = parms.courseId;

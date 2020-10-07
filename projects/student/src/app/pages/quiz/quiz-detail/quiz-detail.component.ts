@@ -16,7 +16,7 @@ export class QuizDetailComponent implements OnInit {
   index = 0;
   timeInterval;
   questions;
-  que;
+  que: any;
   anss = [];
   min = 1;
   sec = 59;
@@ -143,38 +143,15 @@ export class QuizDetailComponent implements OnInit {
 
   }
 
-  addAns(qid, ans) {
-    let i = this.anss.findIndex(x => x.qId === qid);
-    // console.log(i);
-
-    if (this.anss[i].givenAns[0] === ans) {
-      this.anss[i].givenAns = [];
-    } else {
-      this.anss[i].givenAns[0] = ans;
-    }
-  }
 
   ansIndex(qid) {
     return this.anss.findIndex(x => x.qId === qid);
   }
 
 
-  addMultiAns(qid, ans) {
-    let queid = this.anss.findIndex(x => x.qId === qid);
-    const i = this.anss[queid].givenAns.indexOf(ans);
-    // console.log(i);
-
-    if (i === -1) {
-      this.anss[queid].givenAns.push(ans);
-    } else {
-      this.anss[queid].givenAns.splice(i, 1);
-    }
+  submitData() {
     console.log(this.anss);
 
-  }
-
-
-  submitData() {
     UIkit.modal.confirm('You are to submit your Quiz... <br> Once you press the Submit Quiz you cannot return to your quiz.').then(() => {
       this.quizSubmission();
     }, () => {

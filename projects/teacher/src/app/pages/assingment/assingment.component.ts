@@ -3,16 +3,19 @@ import { ActivatedRoute } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { DataService } from '../../data.service';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 declare var UIkit;
 
 @Component({
   selector: 'app-assingment',
   templateUrl: './assingment.component.html',
-  styleUrls: ['./assingment.component.scss']
+  styleUrls: ['./assingment.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
 export class AssingmentComponent implements OnInit {
-
+  showEditDilog = false;
   courseId;
   blockId;
   allAssingment;
@@ -24,14 +27,19 @@ export class AssingmentComponent implements OnInit {
   newAssingment = {
     assingmentTitle: '', assingmentDesc: '', assingmentUrl: '', outOf: '', deadLine: '', courseId: '', blockId: ''
   };
-  constructor(private route: ActivatedRoute, private dataService: DataService, private storage: AngularFireStorage) { }
+
+
+
+  constructor(private route: ActivatedRoute, private dataService: DataService, private storage: AngularFireStorage,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     const now = new Date;
     this.today = now.toISOString();
     // console.log(this.today);
 
-    this.route.params.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.blockId = params.subBlockId;
       this.courseId = params.courseId;
       this.newAssingment.courseId = this.courseId;
@@ -47,7 +55,7 @@ export class AssingmentComponent implements OnInit {
     };
   }
   uploadFile(event) {
-    const file = event.target.files[0];
+    const file = event.files[0];
     const name = file.name;
     this.fileName = file.name;
     const lastDot = name.lastIndexOf('.');
@@ -69,6 +77,8 @@ export class AssingmentComponent implements OnInit {
   }
 
   deleteRefrence() {
+    // this.newAssingment.assingmentUrl = '';
+    // this.fileName = '';
     this.storage.storage.refFromURL(this.newAssingment.assingmentUrl).delete().then(() => {
       this.newAssingment.assingmentUrl = '';
       this.fileName = '';
@@ -76,12 +86,15 @@ export class AssingmentComponent implements OnInit {
   }
 
   deleteAssingment(id, url) {
-    UIkit.modal.confirm('Delete Selected Assingment Permanently').then(() => {
-      this.storage.storage.refFromURL(url).delete().then(() => {
-        this.dataService.deleteItem('assingments/' + id).subscribe(() => {
-          this.getAssingment();
+    this.confirmationService.confirm({
+      message: 'Delete Selected Assingment Permanently?',
+      accept: () => {
+        this.storage.storage.refFromURL(url).delete().then(() => {
+          this.dataService.deleteItem('assingments/' + id).subscribe(() => {
+            this.getAssingment();
+          });
         });
-      });
+      }
     });
   }
 
@@ -100,35 +113,14 @@ export class AssingmentComponent implements OnInit {
   }
   updateAssingment() {
     this.dataService.updateItem('assingments/' + this.idToUpdate, this.newAssingment).subscribe(() => {
-      UIkit.notification({
-        message: 'Updateed Successfully',
-        status: 'primary',
-        pos: 'top-right',
-        timeout: 1000
-      });
-      UIkit.modal('#edit-assingment').hide();
+
+      this.messageService.add({ severity: 'success', summary: 'Updated successfully' });
+      this.showEditDilog = false;
       this.getAssingment();
       this.reset();
     });
   }
-  addAssingment() {
-    // console.log(this.newAssingment);
-    this.dataService.addItem('assingments', this.newAssingment).subscribe(data => {
-      if (this.allAssingment) {
-        this.allAssingment.push(data);
-      } else {
-        this.getAssingment();
-      }
-      UIkit.notification({
-        message: 'Added Successfully',
-        status: 'primary',
-        pos: 'top-right',
-        timeout: 5000
-      });
-      this.reset();
-    });
 
-  }
   getAssingment() {
     this.dataService.getFilterData({ to: 'assingments', filter: { courseId: this.courseId, blockId: this.blockId }, projection: {} }
     ).subscribe(data => {

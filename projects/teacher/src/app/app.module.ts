@@ -32,6 +32,8 @@ import { CreateAssingmentComponent } from './pages/assingment/create-assingment/
 import { HttpClientModule } from '@angular/common/http';
 import { DescTopicComponent } from './pages/discussion/desc-topic/desc-topic.component';
 import { AnnouncementComponent } from './pages/announcement/announcement.component';
+import { PrimengModule } from './primeng/primeng.module';
+import { PolesComponent } from './pages/poles/poles.component';
 
 
 @NgModule({
@@ -52,6 +54,7 @@ import { AnnouncementComponent } from './pages/announcement/announcement.compone
     CreateAssingmentComponent,
     DescTopicComponent,
     AnnouncementComponent,
+    PolesComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,8 @@ import { AnnouncementComponent } from './pages/announcement/announcement.compone
     MatButtonModule,
     MatSidenavModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    PrimengModule
   ],
   providers: [],
   bootstrap: [AppComponent]

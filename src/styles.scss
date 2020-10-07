@@ -1,6 +1,10 @@
-@import "../node_modules/uikit/src/scss/variables-theme.scss";
-@import "../node_modules/uikit/src/scss/mixins-theme.scss";
-@import "../node_modules/uikit/src/scss/uikit-theme.scss";
+// @import "../node_modules/uikit/src/scss/variables-theme.scss";
+// @import "../node_modules/uikit/src/scss/mixins-theme.scss";
+// @import "../node_modules/uikit/src/scss/uikit-theme.scss";
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeng/resources/themes/mdc-light-deeppurple/theme.css";
+@import "../node_modules/bulma/css/bulma.min.css";
+@import "../node_modules/primeicons/primeicons.css";
 
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@700;900&display=swap");
 
@@ -14,70 +18,38 @@ html {
   background-color: #eeee;
 }
 
-.uk-button-primary {
-  background-color: #286090;
+.p-inputtext {
+  width: -webkit-fill-available;
+  padding: 0.5rem 0.5rem;
 }
 
-.uk-button-primary:hover,
-.uk-button-primary:focus {
-  background-color: #2a3f54;
+
+.breadcrumb li+li::before {
+  margin: 0px 10px;
 }
 
-.uk-button-secondary {
-  background-color: #169f85;
+.mydialog {
+  width: 50vw;
 }
 
-h1,
-.uk-h1,
-h2,
-.uk-h2,
-h3,
-.uk-h3,
-h4,
-.uk-h4,
-h5,
-.uk-h5,
-h6,
-.uk-h6,
-.uk-heading-small,
-.uk-heading-medium,
-.uk-heading-large,
-.uk-heading-xlarge,
-.uk-heading-2xlarge {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
+@media screen and (max-width: 40em) {
+  .mydialog {
+    width: 75vw;
+  }
 }
 
-a.uk-link-text:hover,
-.uk-link-text a:hover,
-.uk-link-toggle:hover .uk-link-text,
-.uk-link-toggle:focus .uk-link-text {
-  color: #333;
+
+.p-subtitle {
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  color: rgba(0, 0, 0, 0.6);
 }
 
-a:hover,
-.uk-link:hover,
-.uk-link-toggle:hover .uk-link,
-.uk-link-toggle:focus .uk-link {
-  color: #0f6ecd;
-  text-decoration: none;
+hr {
+  height: 2px;
+  margin: 1rem 0;
 }
 
-.uk-button {
-  text-transform: capitalize;
-}
-
-body {
-  margin: 0;
-}
-
-.mat-radio-outer-circle {
-  border-style: none !important;
-}
-
-.uk-breadcrumb>*>* {
-  display: inline-block;
-  font-size: 1.3rem;
-  color: #333;
-  font-weight: 500;
+.card-content {
+  background-color: #fff;
 }

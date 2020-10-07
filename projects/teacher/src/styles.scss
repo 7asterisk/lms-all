@@ -1,13 +1,19 @@
-@import "../node_modules/uikit/src/scss/variables-theme.scss";
-@import "../node_modules/uikit/src/scss/mixins-theme.scss";
-@import "../node_modules/uikit/src/scss/uikit-theme.scss";
+// @import "../node_modules/uikit/src/scss/variables-theme.scss";
+// @import "../node_modules/uikit/src/scss/mixins-theme.scss";
+// @import "../node_modules/uikit/src/scss/uikit-theme.scss";
 
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@700;900&display=swap');
+@import "node_modules/primeicons/primeicons.css";
+@import "node_modules/primeng/resources/themes/mdc-light-deeppurple/theme.css";
+@import "node_modules/primeng/resources/primeng.min.css";
+
+@import "node_modules/bulma/css/bulma.min.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@700;900&display=swap");
 
 html,
 body {
   height: 100%;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 html {
@@ -31,8 +37,7 @@ h6,
 .uk-heading-large,
 .uk-heading-xlarge,
 .uk-heading-2xlarge {
-
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
 }
 
@@ -44,7 +49,6 @@ body {
   margin: 0;
 }
 
-
 .uk-breadcrumb>*>* {
   display: inline-block;
   font-size: 1.3rem;
@@ -52,7 +56,7 @@ body {
   font-weight: 500;
 }
 
-.uk-breadcrumb> :nth-child(n+2):not(.uk-first-column)::before {
+.uk-breadcrumb> :nth-child(n + 2):not(.uk-first-column)::before {
   content: "/";
   display: inline-block;
   margin: 0 6px;

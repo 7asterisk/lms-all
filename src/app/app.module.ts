@@ -11,6 +11,9 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 import { FormsModule } from '@angular/forms';
+import { PrimengModule } from './primeng/primeng.module';
+import { MessageService } from 'primeng/api';
+import { NgProgressModule } from 'ngx-progressbar';
 
 @NgModule({
   declarations: [
@@ -24,9 +27,15 @@ import { FormsModule } from '@angular/forms';
     StudentModule.forRoot(),
     TeacherModule.forRoot(),
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    PrimengModule,
+    NgProgressModule,
+    NgProgressModule.withConfig({
+      spinnerPosition: 'right',
+      color: '#673AB7'
+    }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

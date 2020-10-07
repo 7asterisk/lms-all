@@ -59,7 +59,7 @@ export class QuizSubmissionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(parms => {
+    this.route.queryParams.subscribe(parms => {
       this.quizId = parms.quizId;
       this.blockId = parms.subBlockId;
       this.courseId = parms.courseId;

@@ -10,3 +10,7 @@
   color: #666;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
+
+:host ::ng-deep .p-dropdown {
+  width: -webkit-fill-available;
+}

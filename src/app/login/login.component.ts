@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-declare var UIkit;
+
+import { MessageService } from 'primeng/api';
 
 import { HttpClient } from '@angular/common/http';
+import { NgProgressComponent } from 'ngx-progressbar';
 
 
 
@@ -15,20 +17,28 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent implements OnInit {
   forgotEmail;
 
-
-  apiUrl = 'http://localhost:5000';
-  // apiUrl = 'https://coursebackend.herokuapp.com';
-
+  display: boolean = false;
+  @ViewChild(NgProgressComponent) progressBar: NgProgressComponent;
 
 
-  constructor(private http: HttpClient, private auth: AuthService, private router: Router) { }
+  // apiUrl = 'http://localhost:5000';
+  apiUrl = 'https://coursebackend.herokuapp.com';
+
+
+
+  constructor(private http: HttpClient, private auth: AuthService, private router: Router, private messageService: MessageService) { }
   onSubmit(form) {
     const values = form.value;
+
+
+    this.progressBar.start();
+
+
     // console.log(values);
     this.addItem('auth', { to: 'student', credential: values }).subscribe(data => {
-      // console.log(data);
       this.auth.setToken(data['token'], data['userId'], 'st');
       this.router.navigate(['/st/home']);
+      this.progressBar.complete()
     }, err => {
       if (err.error.msg === 'user not found!') {
         this.addItem('auth', { to: 'teacher', credential: values }).subscribe(data => {
@@ -36,18 +46,10 @@ export class LoginComponent implements OnInit {
           this.auth.setToken(data['token'], data['userId'], 'tr');
           this.router.navigate(['/tr/home']);
         }, err => {
-          UIkit.notification({
-            message: err.error.msg,
-            status: 'danger',
-            pos: 'top-center'
-          });
+          this.addTost('error', err.error.msg,)
         });
       } else {
-        UIkit.notification({
-          message: err.error.msg,
-          status: 'danger',
-          pos: 'top-center'
-        });
+        this.addTost('error', err.error.msg,)
       }
     });
   }
@@ -56,12 +58,8 @@ export class LoginComponent implements OnInit {
     if (this.forgotEmail.length > 1) {
       const data = { to: 'teacher', forgotEmail: this.forgotEmail };
       this.forgotPassword(data).subscribe(data => {
-        UIkit.modal('#forgot-password').hide();
-        UIkit.notification({
-          message: data['message'],
-          status: 'success',
-          pos: 'top-center'
-        });
+        this.display = false;
+        this.addTost('success', 'Reset link is send to your email.')
         console.log(data);
       });
     }
@@ -84,6 +82,17 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/st/home']);
       } else { this.router.navigate(['/tr/home']); }
     }
+  }
+
+  showDialog() {
+    this.display = true;
+  }
+  addTost(type, msg) {
+    this.messageService.add({ severity: type, detail: msg });
+  }
+
+  clear() {
+    this.messageService.clear();
   }
 
 }

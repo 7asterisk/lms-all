@@ -15,6 +15,7 @@ import { CreateAssingmentComponent } from './pages/assingment/create-assingment/
 import { TrGuardGuard } from 'src/app/auth/tr-guard.guard';
 import { AnnouncementComponent } from './pages/announcement/announcement.component';
 import { DescTopicComponent } from './pages/discussion/desc-topic/desc-topic.component';
+import { PolesComponent } from './pages/poles/poles.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
       { path: 'discussion', component: DiscussionComponent },
       { path: 'about-course', component: AboutCourseComponent },
       { path: 'announcement', component: AnnouncementComponent },
+      { path: 'polls', component: PolesComponent },
     ], canActivate: [TrGuardGuard]
   },
   { path: 'tr/home', component: HomeComponent, canActivate: [TrGuardGuard] }

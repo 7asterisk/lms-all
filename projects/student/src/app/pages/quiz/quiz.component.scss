@@ -1,36 +1,19 @@
-.questionBox {
-  border: solid 1px;
-  padding: 10px;
-  margin: 20px;
-}
-
-.delete {
-  float: right;
-  margin-top: -5px;
-}
-
-.uk-modal-full .uk-modal-dialog {
-  min-height: 100vh;
-}
-
-.uk-table td {
-  vertical-align: middle;
-}
-
-table {
-  border-collapse: separate;
-  border-spacing: 0 20px;
-}
-
-table tr td {
-  padding: 10px 15px !important;
-  background-color: white;
-}
-
-tr {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-}
-
 .quiz-row {
   // cursor: pointer;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-panels {
+  background: transparent;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  background: transparent;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: transparent;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent;
 }

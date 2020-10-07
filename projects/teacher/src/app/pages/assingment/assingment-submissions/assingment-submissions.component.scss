@@ -13,10 +13,23 @@ tr {
   cursor: pointer;
 }
 
-.uk-table td {
-  vertical-align: middle;
+.table {
+  background-color: transparent;
 }
 
-.uk-table th {
-  padding: 1px 12px;
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  background: transparent;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: transparent;
+}
+
+
+:host ::ng-deep .p-tabview .p-tabview-panels {
+  background: transparent;
 }

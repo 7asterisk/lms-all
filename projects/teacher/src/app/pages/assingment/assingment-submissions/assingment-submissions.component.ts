@@ -23,6 +23,7 @@ export class AssingmentSubmissionsComponent implements OnInit {
   courseId;
   notSubmited = [];
   toAssist;
+  showDilog = false;
   assingMarks = { to: '', marks: '', feedback: '', studentId: '' };
   constructor(private dataService: DataService, private authService: AuthService, private route: ActivatedRoute) {
     this.teacherId = this.authService.getUserId();
@@ -30,6 +31,7 @@ export class AssingmentSubmissionsComponent implements OnInit {
 
 
   addMarks(sub) {
+    this.showDilog = true;
     this.toAssist = sub;
     console.log(this.toAssist);
     this.assingMarks.marks = sub.marks;
@@ -42,7 +44,7 @@ export class AssingmentSubmissionsComponent implements OnInit {
     this.dataService.updateAssingmentSub(this.assingMarks).subscribe(data => {
       console.log(data);
       this.toAssist = null;
-      UIkit.modal('#submission-modal').hide();
+      this.showDilog = false;
       this.updateNewGrade(this.assingMarks.studentId);
     });
   }
@@ -110,7 +112,7 @@ export class AssingmentSubmissionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(parms => {
+    this.route.queryParams.subscribe(parms => {
       this.assingmentId = parms.assingment;
       this.assingMarks.to = this.assingmentId;
       this.courseId = parms.courseId;

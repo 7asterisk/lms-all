@@ -1,26 +1,25 @@
+<ng-progress></ng-progress>
+
 <br>
-<div class="uk-container">
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>notes</span></li>
-  </ul>
+<div class="container is-fluid">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>notes</li>
+    </ul>
+  </nav>
 
 
-  <ul uk-accordion>
-    <li class="uk-card uk-card-default uk-card-body" *ngFor="let folder of allFolder">
-      <a class="uk-accordion-title" href="#"> <span uk-icon="folder"></span> {{folder.folderName}}</a>
-      <div class="uk-accordion-content">
-
-        <ul class="uk-list">
-          <li *ngFor="let note of folder.notes ; let i = index">
-            <a href="{{note.noteUrl}}"> <span uk-icon="file-text"></span>
-              {{note.noteName}}</a>
-          </li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-
+  <p-accordion>
+    <p-accordionTab *ngFor="let folder of allFolder" header="{{folder.folderName}}">
+      <ul>
+        <li *ngFor="let note of folder.notes">
+          <a href="{{note.noteUrl}}"> <i class="pi pi-file"></i>
+            {{note.noteName}}</a>
+        </li>
+      </ul>
+    </p-accordionTab>
+  </p-accordion>
 </div>
 
 

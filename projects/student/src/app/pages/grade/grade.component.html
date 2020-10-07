@@ -1,72 +1,54 @@
-<div class="uk-container">
+<div class="container is-fluid">
+  <br>
+  <div class="columns">
+    <div class="column is-6">
+      <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li>{{courseName}}</li>
+          <li>Assingments</li>
+        </ul>
+      </nav>
 
-  <div uk-grid>
-    <div class="uk-width-1-2@m">
-
-      <ul class="uk-breadcrumb">
-        <li><a>{{courseName}}</a></li>
-        <li><span>Assingment</span></li>
-      </ul>
-
-
-      <table class="uk-table">
-        <thead>
-          <tr style="box-shadow: none;">
-            <th class="uk-width-small">Assingment</th>
-            <th>Submitted On</th>
-            <th>marks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="quiz-row" *ngFor="let assingment of assingments">
-            <td class="uk-text-truncate"> <a href="{{assingment.assingmentUrl}}"> {{assingment.assingmentTitle}} </a>
-            </td>
-            <td>
-              <span
-                *ngIf="assingment.submission[0]?.submissionDate">{{assingment.submission[0]?.submissionDate | date:'medium'}}</span>
-            </td>
-
-            <td>
+      <div *ngFor="let assingment of assingments" class="mb-2">
+        <p-panel header="{{assingment.assingmentTitle}}">
+          <div class="columns is-mobile">
+            <div class="column is-6">
+              <span *ngIf="assingment.submission[0]?.submissionDate">
+                {{assingment.submission[0]?.submissionDate | date:'d/M/yy, h:mm a'}}
+              </span>
+            </div>
+            <div class="column is-6">
               <span *ngIf="assingment.submission[0]?.marks">{{assingment.submission[0]?.marks}}</span>
               <span *ngIf="!assingment.submission[0]?.marks"> - </span>
               /{{assingment.outOf}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </p-panel>
+      </div>
     </div>
 
-    <div class="uk-width-1-2@m">
+    <div class="column is-6">
+      <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li>{{courseName}}</li>
+          <li>Quiz</li>
+        </ul>
+      </nav>
 
+      <div *ngFor="let quiz of quizs" class="mb-2">
+        <p-panel header="{{quiz.quizTitle  }}">
+          <div class="columns  is-mobile">
+            <div class="column is-8">
+              <span>{{quiz.submission[0]?.submissionDate | date:'d/M/yy, h:mm a'}}</span>
+            </div>
+            <div class="column is-4">
+              <span *ngIf="!quiz.submission[0]?.marks"> - /</span>
+              <span *ngIf="quiz.submission[0]?.marks">{{quiz.submission[0]?.marks}} /</span> {{quiz.outOf}}
 
-      <ul class="uk-breadcrumb">
-        <li><a>{{courseName}}</a></li>
-        <li><span>Quiz</span></li>
-      </ul>
-
-      <table class="uk-table">
-        <thead>
-          <tr style="box-shadow: none;">
-            <th class="uk-width-small">Title</th>
-            <th>Submitted On</th>
-            <th>Marks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="quiz-row" *ngFor="let quiz of quizs">
-            <td class="uk-text-truncate">{{quiz.quizTitle  }}</td>
-            <td>
-              <span>{{quiz.submission[0]?.submissionDate | date:'medium'}}</span>
-            </td>
-
-
-            <td><span *ngIf="!quiz.submission[0]?.marks"> - /</span>
-              <span *ngIf="quiz.submission[0]?.marks">{{quiz.submission[0]?.marks}} /</span> {{quiz.outOf}}</td>
-          </tr>
-        </tbody>
-      </table>
-
-
+            </div>
+          </div>
+        </p-panel>
+      </div>
     </div>
   </div>
 

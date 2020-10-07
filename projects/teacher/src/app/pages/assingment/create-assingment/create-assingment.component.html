@@ -1,65 +1,65 @@
 <br>
-<div class="uk-container uk-container-xsmall">
-  <ul class="uk-breadcrumb">
-    <li><a>{{courseName}}</a></li>
-    <li><span>Create Assingment</span></li>
-  </ul>
-  <form class="uk-card uk-card-default uk-card-body">
-    <fieldset class="uk-fieldset">
+<div class="container is-fluid">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li>{{courseName}}</li>
+      <li>Create Assingment</li>
+    </ul>
+  </nav>
+  <div class="card column is-8 is-offset-2 card-content">
+    <form>
+      <fieldset class="uk-fieldset">
 
-      <legend class="uk-legend">Add New Assingment</legend>
+        <legend class="card-title">Add New Assingment</legend>
 
-      <div class="uk-margin">
-        <label class="uk-form-label" for="form-stacked-select">Add title</label>
-        <input class="uk-input" type="text" name="aname" [(ngModel)]="newAssingment.assingmentTitle"
-          placeholder="Assingment Title">
-      </div>
+        <div class="mb-2">
+          <label class="uk-form-label" for="form-stacked-select">Add title</label>
+          <input pInputText type="text" name="aname" [(ngModel)]="newAssingment.assingmentTitle"
+            placeholder="Assingment Title" />
+        </div>
 
 
-      <div *ngIf="!newAssingment.assingmentUrl" class=" uk-placeholder uk-text-center"
-        style="width: -webkit-fill-available;" uk-form-custom>
-        <input type="file" (change)="uploadFile($event)">
-        <div class="uk-width-1-1">
-          <span uk-icon="icon: cloud-upload"></span> &nbsp;
-          <div uk-form-custom>
-            <span>select File</span>
+        <p-fileUpload name="myfile" *ngIf="!newAssingment.assingmentUrl" (onSelect)="uploadFile($event)"
+          [showUploadButton]="false" [showCancelButton]="false" chooseLabel="Select File"></p-fileUpload>
+        <div *ngIf="newAssingment.assingmentUrl" class="chapter-box">
+          <i class="pi pi-file"></i>
+          <a href="{{newAssingment.assingmentUrl}}">
+            {{newAssingment.assingmentTitle}} </a>
+          <button pButton pRipple type="button" icon="pi pi-times" (click)="deleteRefrence()"
+            class="p-button-rounded p-button-danger p-button-text"></button>
+        </div>
+        <br>
+
+
+
+        <div class="columns is-vcentered" uk-grid>
+          <div class="column is-6">
+            <label class="uk-form-label" for="form-stacked-select">Add Deadline</label>
+            <input pInputText type="date" name="deadline" [(ngModel)]="newAssingment.deadLine">
+          </div>
+          <div class="column is-6">
+            <label class="uk-form-label" for="form-stacked-select">Marks</label>
+            <input pInputText type="number" name="marks" placeholder="outof" [(ngModel)]="newAssingment.outOf">
           </div>
         </div>
-      </div>
-
-      <div *ngIf="newAssingment.assingmentUrl" class="chapter-box">
-        <a href="{{newAssingment.assingmentUrl}}">
-          {{fileName}} </a>
-        <a uk-icon="icon: trash" (click)="deleteRefrence()"></a>
-      </div>
 
 
 
-
-      <div class="uk-grid-small" uk-grid>
-        <div class="uk-width-1-2@s">
-          <label class="uk-form-label" for="form-stacked-select">Add Deadline</label>
-          <input class="uk-input " type="date" name="deadline" [(ngModel)]="newAssingment.deadLine">
+        <div class="mb-2">
+          <label class="uk-form-label" for="form-stacked-select">Add Description</label>
+          <textarea pInputTextarea autoResize="autoResize" rows="2" name="desc"
+            [(ngModel)]="newAssingment.assingmentDesc" placeholder="Assingment Description"></textarea>
         </div>
-        <div class=" uk-width-1-2@s">
-          <label class="uk-form-label" for="form-stacked-select">Marks</label>
-          <input class="uk-input" type="number" name="marks" placeholder="outof" [(ngModel)]="newAssingment.outOf">
+
+
+
+        <div class="mb-2">
+          <button pButton label="Add Assingment" (click)="addAssingment()"> </button>
         </div>
-      </div>
+      </fieldset>
+    </form>
 
-      <div class="uk-margin">
-        <label class="uk-form-label" for="form-stacked-select">Add Description</label>
-        <textarea class="uk-textarea" rows="5" name="desc" [(ngModel)]="newAssingment.assingmentDesc"
-          placeholder="Assingment Description"></textarea>
-      </div>
-
-      <div class="uk-margin">
-        <button class="uk-button uk-button-secondary" (click)="addAssingment()">
-          Add Assingment
-        </button>
-      </div>
-    </fieldset>
-  </form>
+  </div>
 
 
 </div>
