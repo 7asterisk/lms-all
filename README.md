@@ -1,5 +1,9 @@
 # Lms
 
+![](https://github.com/7asterisk/lms-all/blob/master/Screenshot%202020-12-18%20232520.jpg)
+
+![](https://github.com/7asterisk/lms-all/blob/master/Screenshot%202020-12-18%20232649.jpg)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.6.
 
 ## Development server
